@@ -133,9 +133,6 @@ const AP_Scheduler::Task Copter::scheduler_tasks[] = {
 #if PRECISION_LANDING == ENABLED
     SCHED_TASK(update_precland,      400,     50),
 #endif
-#if FRAME_CONFIG == HELI_FRAME
-    SCHED_TASK(check_dynamic_flight,  50,     75),
-#endif
 #if LOGGING_ENABLED == ENABLED
     SCHED_TASK(fourhundred_hz_logging,400,    50),
 #endif
@@ -245,13 +242,6 @@ void Copter::fast_loop()
     // --------------------
     read_AHRS();
 
-#if FRAME_CONFIG == HELI_FRAME
-    update_heli_control_dynamics();
-    #if MODE_AUTOROTATE_ENABLED == ENABLED
-        heli_update_autorotation();
-    #endif
-#endif //HELI_FRAME
-
     // Inertial Nav
     // --------------------
     read_inertia();
@@ -298,14 +288,6 @@ void Copter::throttle_loop()
 
     // check auto_armed status
     update_auto_armed();
-
-#if FRAME_CONFIG == HELI_FRAME
-    // update rotor speed
-    heli_update_rotor_speed_targets();
-
-    // update trad heli swash plate movement
-    heli_update_landing_swash();
-#endif
 
     // compensate for ground effect (if enabled)
     update_ground_effect_detector();
@@ -376,9 +358,7 @@ void Copter::ten_hz_logging_loop()
         logger.Write_Beacon(g2.beacon);
 #endif
     }
-#if FRAME_CONFIG == HELI_FRAME
-    Log_Write_Heli();
-#endif
+
 }
 
 // twentyfive_hz_logging - should be run at 25hz
@@ -449,10 +429,9 @@ void Copter::one_hz_loop()
         // check the user hasn't updated the frame class or type
         motors->set_frame_class_and_type((AP_Motors::motor_frame_class)g2.frame_class.get(), (AP_Motors::motor_frame_type)g.frame_type.get());
 
-#if FRAME_CONFIG != HELI_FRAME
         // set all throttle channel settings
         motors->set_throttle_range(channel_throttle->get_radio_min(), channel_throttle->get_radio_max());
-#endif
+
     }
 
     // update assigned functions and enable auxiliary servos

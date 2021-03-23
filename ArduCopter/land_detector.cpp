@@ -45,13 +45,9 @@ void Copter::update_land_detector()
         // if disarmed, always landed.
         set_land_complete(true);
     } else if (ap.land_complete) {
-#if FRAME_CONFIG == HELI_FRAME
-        // if rotor speed and collective pitch are high then clear landing flag
-        if (motors->get_takeoff_collective() && motors->get_spool_state() == AP_Motors::SpoolState::THROTTLE_UNLIMITED) {
-#else
-        // if throttle output is high then clear landing flag
+    // if throttle output is high then clear landing flag
         if (motors->get_throttle() > get_non_takeoff_throttle()) {
-#endif
+
             set_land_complete(false);
         }
     } else if (standby_active) {
@@ -59,13 +55,10 @@ void Copter::update_land_detector()
         land_detector_count = 0;
     } else {
 
-#if FRAME_CONFIG == HELI_FRAME
-        // check that collective pitch is below mid collective (zero thrust) position
-        bool motor_at_lower_limit = (motors->get_below_mid_collective() && fabsf(ahrs.get_roll()) < M_PI/2.0f);
-#else
+
         // check that the average throttle output is near minimum (less than 12.5% hover throttle)
         bool motor_at_lower_limit = motors->limit.throttle_lower && attitude_control->is_throttle_mix_min();
-#endif
+
 
         // check that the airframe is not accelerating (not falling or braking after fast forward flight)
         bool accel_stationary = (land_accel_ef_filter.get().length() <= LAND_DETECTOR_ACCEL_MAX);
@@ -142,7 +135,6 @@ void Copter::set_land_complete_maybe(bool b)
 //  has no effect when throttle is above hover throttle
 void Copter::update_throttle_mix()
 {
-#if FRAME_CONFIG != HELI_FRAME
     // if disarmed or landed prioritise throttle
     if (!motors->armed() || ap.land_complete) {
         attitude_control->set_throttle_mix_min();
@@ -179,5 +171,4 @@ void Copter::update_throttle_mix()
             attitude_control->set_throttle_mix_min();
         }
     }
-#endif
 }

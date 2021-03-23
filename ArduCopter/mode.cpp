@@ -201,45 +201,17 @@ bool Copter::set_mode(Mode::Number mode, ModeReason reason)
 
     bool ignore_checks = !motors->armed();   // allow switching to any mode if disarmed.  We rely on the arming check to perform
 
-#if FRAME_CONFIG == HELI_FRAME
-    // do not allow helis to enter a non-manual throttle mode if the
-    // rotor runup is not complete
-    if (!ignore_checks && 
-    !new_flightmode->has_manual_throttle() && 
-    (motors->get_spool_state() == AP_Motors::SpoolState::SPOOLING_UP || motors->get_spool_state() == AP_Motors::SpoolState::SPOOLING_DOWN)) {
-        #if MODE_AUTOROTATE_ENABLED == ENABLED
-            //if the mode being exited is the autorotation mode allow mode change despite rotor not being at
-            //full speed.  This will reduce altitude loss on bail-outs back to non-manual throttle modes
-            bool in_autorotation_check = (flightmode != &mode_autorotate || new_flightmode != &mode_autorotate);
-        #else
-            bool in_autorotation_check = false;
-        #endif
 
-        if (!in_autorotation_check) {
-            gcs().send_text(MAV_SEVERITY_WARNING,"Flight mode change failed");
-            AP::logger().Write_Error(LogErrorSubsystem::FLIGHT_MODE, LogErrorCode(mode));
-            return false;
-        }
-    }
-
-    #if MODE_AUTOROTATE_ENABLED == ENABLED
-        // If changing to autorotate flight mode from a non-manual throttle mode, store the previous flight mode
-        // to exit back to it when interlock is re-engaged
-        prev_control_mode = control_mode;
-    #endif
-#endif
-
-#if FRAME_CONFIG != HELI_FRAME
     // ensure vehicle doesn't leap off the ground if a user switches
     // into a manual throttle mode from a non-manual-throttle mode
     // (e.g. user arms in guided, raises throttle to 1300 (not enough to
     // trigger auto takeoff), then switches into manual):
     bool user_throttle = new_flightmode->has_manual_throttle();
-#if MODE_DRIFT_ENABLED == ENABLED
+    #if MODE_DRIFT_ENABLED == ENABLED
     if (new_flightmode == &mode_drift) {
         user_throttle = true;
     }
-#endif
+    #endif
     if (!ignore_checks &&
         ap.land_complete &&
         user_throttle &&
@@ -249,7 +221,7 @@ bool Copter::set_mode(Mode::Number mode, ModeReason reason)
         AP::logger().Write_Error(LogErrorSubsystem::FLIGHT_MODE, LogErrorCode(mode));
         return false;
     }
-#endif
+
 
     if (!ignore_checks &&
         new_flightmode->requires_GPS() &&
@@ -362,24 +334,6 @@ void Copter::exit_mode(Mode *&old_flightmode,
     }
 #endif
 
-#if FRAME_CONFIG == HELI_FRAME
-    // firmly reset the flybar passthrough to false when exiting acro mode.
-    if (old_flightmode == &mode_acro) {
-        attitude_control->use_flybar_passthrough(false, false);
-        motors->set_acro_tail(false);
-    }
-
-    // if we are changing from a mode that did not use manual throttle,
-    // stab col ramp value should be pre-loaded to the correct value to avoid a twitch
-    // heli_stab_col_ramp should really only be active switching between Stabilize and Acro modes
-    if (!old_flightmode->has_manual_throttle()){
-        if (new_flightmode == &mode_stabilize){
-            input_manager.set_stab_col_ramp(1.0);
-        } else if (new_flightmode == &mode_acro){
-            input_manager.set_stab_col_ramp(0.0);
-        }
-    }
-#endif //HELI_FRAME
 }
 
 // notify_flight_mode - sets notify object based on current flight mode.  Only used for OreoLED notify device

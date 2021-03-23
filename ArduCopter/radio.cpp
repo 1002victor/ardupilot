@@ -8,13 +8,8 @@ void Copter::default_dead_zones()
 {
     channel_roll->set_default_dead_zone(20);
     channel_pitch->set_default_dead_zone(20);
-#if FRAME_CONFIG == HELI_FRAME
-    channel_throttle->set_default_dead_zone(10);
-    channel_yaw->set_default_dead_zone(15);
-#else
     channel_throttle->set_default_dead_zone(30);
     channel_yaw->set_default_dead_zone(20);
-#endif
     rc().channel(CH_6)->set_default_dead_zone(0);
 }
 
@@ -56,24 +51,17 @@ void Copter::init_rc_out()
     // update rate must be set after motors->init() to allow for motor mapping
     motors->set_update_rate(g.rc_speed);
 
-#if FRAME_CONFIG != HELI_FRAME
     motors->set_throttle_range(channel_throttle->get_radio_min(), channel_throttle->get_radio_max());
-#else
-    // setup correct scaling for ESCs like the UAVCAN ESCs which
-    // take a proportion of speed.
-    hal.rcout->set_esc_scaling(channel_throttle->get_radio_min(), channel_throttle->get_radio_max());
-#endif
+
 
     // refresh auxiliary channel to function map
     SRV_Channels::update_aux_servo_function();
 
-#if FRAME_CONFIG != HELI_FRAME
     /*
       setup a default safety ignore mask, so that servo gimbals can be active while safety is on
      */
     uint16_t safety_ignore_mask = (~copter.motors->get_motor_mask()) & 0x3FFF;
     BoardConfig.set_default_safety_ignore_mask(safety_ignore_mask);
-#endif
 }
 
 

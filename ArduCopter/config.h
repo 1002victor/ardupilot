@@ -59,15 +59,6 @@
  # define FRAME_CONFIG   MULTICOPTER_FRAME
 #endif
 
-/////////////////////////////////////////////////////////////////////////////////
-// TradHeli defaults
-#if FRAME_CONFIG == HELI_FRAME
-  # define RC_FAST_SPEED                        125
-  # define WP_YAW_BEHAVIOR_DEFAULT              WP_YAW_BEHAVIOR_LOOK_AHEAD
-  # define THR_MIN_DEFAULT                      0
-  # define AUTOTUNE_ENABLED                     DISABLED
-  # define ACCEL_Z_P                            0.30f
-#endif
 
 //////////////////////////////////////////////////////////////////////////////
 // PWM control
@@ -376,13 +367,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Autorotate - autonomous auto-rotation - helicopters only
 #if CONFIG_HAL_BOARD == HAL_BOARD_SITL
-    #if FRAME_CONFIG == HELI_FRAME
-        #ifndef MODE_AUTOROTATE_ENABLED
-        # define MODE_AUTOROTATE_ENABLED !HAL_MINIMIZE_FEATURES
-        #endif
-    #else
-        # define MODE_AUTOROTATE_ENABLED DISABLED
-    #endif
+      # define MODE_AUTOROTATE_ENABLED DISABLED
 #else
     # define MODE_AUTOROTATE_ENABLED DISABLED
 #endif
@@ -736,10 +721,6 @@
   #error Terrain requires ModeAuto which is disabled
 #endif
 
-#if FRAME_CONFIG == HELI_FRAME && !MODE_ACRO_ENABLED
-  #error Helicopter frame requires acro mode support which is disabled
-#endif
-
 #if MODE_SMARTRTL_ENABLED && !MODE_RTL_ENABLED
   #error SmartRTL requires ModeRTL which is disabled
 #endif
@@ -775,10 +756,6 @@
 
 #ifndef TOY_MODE_ENABLED
 #define TOY_MODE_ENABLED DISABLED
-#endif
-
-#if TOY_MODE_ENABLED && FRAME_CONFIG == HELI_FRAME
-  #error Toy mode is not available on Helicopters
 #endif
 
 #ifndef STATS_ENABLED

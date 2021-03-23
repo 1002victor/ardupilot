@@ -104,7 +104,6 @@ struct PACKED log_MotBatt {
 // Write an rate packet
 void Copter::Log_Write_MotBatt()
 {
-#if FRAME_CONFIG != HELI_FRAME
     struct log_MotBatt pkt_mot = {
         LOG_PACKET_HEADER_INIT(LOG_MOTBATT_MSG),
         time_us         : AP_HAL::micros64(),
@@ -114,7 +113,6 @@ void Copter::Log_Write_MotBatt()
         th_limit        : (float)(motors->get_throttle_limit())
     };
     logger.WriteBlock(&pkt_mot, sizeof(pkt_mot));
-#endif
 }
 
 // Wrote an event packet
@@ -354,21 +352,6 @@ struct PACKED log_Heli {
     float    control_output;
 };
 
-#if FRAME_CONFIG == HELI_FRAME
-// Write an helicopter packet
-void Copter::Log_Write_Heli()
-{
-    struct log_Heli pkt_heli = {
-        LOG_PACKET_HEADER_INIT(LOG_HELI_MSG),
-        time_us                 : AP_HAL::micros64(),
-        desired_rotor_speed     : motors->get_desired_rotor_speed(),
-        main_rotor_speed        : motors->get_main_rotor_speed(),
-        governor_output         : motors->get_governor_output(),
-        control_output          : motors->get_control_output(),
-    };
-    logger.WriteBlock(&pkt_heli, sizeof(pkt_heli));
-}
-#endif
 
 // precision landing logging
 struct PACKED log_Precland {
@@ -475,10 +458,7 @@ const struct LogStructure Copter::log_structure[] = {
       "DU32",  "QBI",         "TimeUS,Id,Value", "s--", "F--" },
     { LOG_DATA_FLOAT_MSG, sizeof(log_Data_Float),         
       "DFLT",  "QBf",         "TimeUS,Id,Value", "s--", "F--" },
-#if FRAME_CONFIG == HELI_FRAME
-    { LOG_HELI_MSG, sizeof(log_Heli),
-      "HELI",  "Qffff",        "TimeUS,DRRPM,ERRPM,Gov,Throt", "s----", "F----" },
-#endif
+
 #if PRECISION_LANDING == ENABLED
     { LOG_PRECLAND_MSG, sizeof(log_Precland),
       "PL",    "QBBfffffffIIB",    "TimeUS,Heal,TAcq,pX,pY,vX,vY,mX,mY,mZ,LastMeasMS,EKFOutl,Est", "s--mmnnmmms--","F--BBBBBBBC--" },
@@ -525,10 +505,6 @@ void Copter::Log_Write_GuidedTarget(uint8_t target_type, const Vector3f& pos_tar
 void Copter::Log_Write_SysID_Setup(uint8_t systemID_axis, float waveform_magnitude, float frequency_start, float frequency_stop, float time_fade_in, float time_const_freq, float time_record, float time_fade_out) {}
 void Copter::Log_Write_SysID_Data(float waveform_time, float waveform_sample, float waveform_freq, float angle_x, float angle_y, float angle_z, float accel_x, float accel_y, float accel_z) {}
 void Copter::Log_Write_Vehicle_Startup_Messages() {}
-
-#if FRAME_CONFIG == HELI_FRAME
-void Copter::Log_Write_Heli() {}
-#endif
 
 void Copter::log_init(void) {}
 

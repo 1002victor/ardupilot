@@ -24,7 +24,6 @@ enum autopilot_yaw_mode {
 // Frame types
 #define UNDEFINED_FRAME 0
 #define MULTICOPTER_FRAME 1
-#define HELI_FRAME 2
 
 // HIL enumerations
 #define HIL_MODE_DISABLED               0

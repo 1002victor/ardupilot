@@ -349,15 +349,7 @@ void RC_Channel_Copter::do_aux_function(const aux_func_t ch_option, const aux_sw
             break;
 
         case AUX_FUNC::MOTOR_INTERLOCK:
-#if FRAME_CONFIG == HELI_FRAME
-            // The interlock logic for ROTOR_CONTROL_MODE_SPEED_PASSTHROUGH is handled 
-            // in heli_update_rotor_speed_targets.  Otherwise turn on when above low.
-            if (copter.motors->get_rsc_mode() != ROTOR_CONTROL_MODE_SPEED_PASSTHROUGH) {
-                copter.ap.motor_interlock_switch = (ch_flag == HIGH || ch_flag == MIDDLE);
-            }
-#else
             copter.ap.motor_interlock_switch = (ch_flag == HIGH || ch_flag == MIDDLE);
-#endif
             break;
 
         case AUX_FUNC::BRAKE:
@@ -425,23 +417,7 @@ void RC_Channel_Copter::do_aux_function(const aux_func_t ch_option, const aux_sw
             break;
 
         case AUX_FUNC::INVERTED:
-#if FRAME_CONFIG == HELI_FRAME
-            switch (ch_flag) {
-            case HIGH:
-                copter.motors->set_inverted_flight(true);
-                copter.attitude_control->set_inverted_flight(true);
-                copter.heli_flags.inverted_flight = true;
-                break;
-            case MIDDLE:
-                // nothing
-                break;
-            case LOW:
-                copter.motors->set_inverted_flight(false);
-                copter.attitude_control->set_inverted_flight(false);
-                copter.heli_flags.inverted_flight = false;
-                break;
-            }
-#endif
+
             break;
 
         case AUX_FUNC::WINCH_ENABLE:
