@@ -21,11 +21,9 @@
 #include <assert.h>
 #include <queue>
 
-#if CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_BH
-#define RCIN_RPI_CHN_NUM 8
-#else
+
 #define RCIN_RPI_CHN_NUM 1
-#endif
+
 
 namespace Linux {
 

@@ -609,43 +609,6 @@ class linux(Board):
             bld.options.upload = False
 
 
-class navio(linux):
-    toolchain = 'arm-linux-gnueabihf'
-
-    def configure_env(self, cfg, env):
-        super(navio, self).configure_env(cfg, env)
-
-        env.DEFINES.update(
-            CONFIG_HAL_BOARD_SUBTYPE = 'HAL_BOARD_SUBTYPE_LINUX_NAVIO',
-        )
-
-
-class bbbmini(linux):
-    toolchain = 'arm-linux-gnueabihf'
-
-    def __init__(self):
-        self.with_uavcan = True
-
-    def configure_env(self, cfg, env):
-        super(bbbmini, self).configure_env(cfg, env)
-
-        env.DEFINES.update(
-            CONFIG_HAL_BOARD_SUBTYPE = 'HAL_BOARD_SUBTYPE_LINUX_BBBMINI',
-        )
-
-
-class aero(linux):
-    def __init__(self):
-        self.with_uavcan = True
-
-    def configure_env(self, cfg, env):
-        super(aero, self).configure_env(cfg, env)
-
-        env.DEFINES.update(
-            CONFIG_HAL_BOARD_SUBTYPE = 'HAL_BOARD_SUBTYPE_LINUX_AERO',
-        )
-
-
 class SITL_static(sitl):
     def configure_env(self, cfg, env):
         super(SITL_static, self).configure_env(cfg, env)

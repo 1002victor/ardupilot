@@ -17,11 +17,9 @@ using namespace Linux;
 
 extern const AP_HAL::HAL& hal;
 
-#if CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_DISCO
-ToneAlarm_Disco Util::_toneAlarm;
-#else
+
 ToneAlarm Util::_toneAlarm;
-#endif
+
 
 void Util::init(int argc, char * const *argv) {
     saved_argc = argc;

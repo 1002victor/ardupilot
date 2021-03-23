@@ -16,11 +16,9 @@
 
 #include "GPIO.h"
 
-#if CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_OCPOC_ZYNQ
-#define RCIN_ZYNQ_PULSE_INPUT_BASE  0x43ca0000
-#else
+
 #define RCIN_ZYNQ_PULSE_INPUT_BASE  0x43c10000
-#endif
+
 
 extern const AP_HAL::HAL& hal;
 
