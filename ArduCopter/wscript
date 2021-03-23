@@ -3,6 +3,7 @@
 
 def build(bld):
     vehicle = bld.path.name
+    print(vehicle)
     bld.ap_stlib(
         name=vehicle + '_libs',
         ap_vehicle=vehicle,
