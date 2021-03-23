@@ -14,6 +14,11 @@
 
 - ArduPlane (or APM:Plane) : [code](https://github.com/ArduPilot/ardupilot/tree/master/ArduPlane), [wiki](http://ardupilot.org/plane/index.html)
 
+- ArduRover (or APMrover2) : [code](https://github.com/ArduPilot/ardupilot/tree/master/APMrover2), [wiki](http://ardupilot.org/rover/index.html)
+
+- ArduSub (or APM:Sub) : [code](https://github.com/ArduPilot/ardupilot/tree/master/ArduSub), [wiki](http://ardusub.com/)
+
+- Antenna Tracker : [code](https://github.com/ArduPilot/ardupilot/tree/master/AntennaTracker), [wiki](http://ardupilot.org/antennatracker/index.html)
 
 ## User Support & Discussion Forums ##
 
@@ -68,7 +73,7 @@ contains the people that regularly contribute to the project and are responsible
 for reviewing patches on their specific area.  See also the list of developers with [merge rights](https://github.com/orgs/ArduPilot/teams/ardupilot-maintainers/members).
 
 - [Andrew Tridgell](https://github.com/tridge):
-  - ***Vehicle***: Plane
+  - ***Vehicle***: Plane, AntennaTracker
   - ***Board***: APM1, APM2, Pixhawk, Pixhawk2, PixRacer
 - [Francisco Ferreira](https://github.com/oxinarf):
   - ***Bug Master***
@@ -85,7 +90,7 @@ for reviewing patches on their specific area.  See also the list of developers w
 - [Peter Barker](https://github.com/peterbarker):
   - ***Subsystem***: DataFlash, Tools
 - [Randy Mackay](https://github.com/rmackay9):
-  - ***Vehicle***: Copter, Rover
+  - ***Vehicle***: Copter, Rover, AntennaTracker
 - [Tom Pittenger](https://github.com/magicrub):
   - ***Vehicle***: Plane
 - [Bill Geyer](https://github.com/bnsgeyer):

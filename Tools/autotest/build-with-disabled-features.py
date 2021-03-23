@@ -233,7 +233,28 @@ specs = [
         "target_binary": "bin/arduplane",
         "reverse-deps": {
         },
-    }, 
+    }, {
+        "config": 'APMrover2/config.h',
+        "autotest_target": "build.APMrover2",
+        "target_binary": "bin/ardurover",
+        "reverse-deps": {
+        },
+    }, {
+        "config": 'ArduSub/config.h',
+        "autotest_target": "build.ArduSub",
+        "target_binary": "bin/ardusub",
+        "reverse-deps": {
+            "AC_FENCE": ["AVOIDANCE_ENABLED"],
+            "PROXIMITY_ENABLED": ["AVOIDANCE_ENABLED"],
+            "AC_RALLY": ["AC_TERRAIN"],
+        },
+    }, {
+        "config": 'AntennaTracker/config.h',
+        "autotest_target": "build.AntennaTracker",
+        "target_binary": "bin/antennatracker",
+        "reverse-deps": {
+        },
+    },
 ]
 
 

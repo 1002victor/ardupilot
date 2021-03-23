@@ -1016,7 +1016,7 @@ void AP_Logger_File::_io_timer(void)
           chunk, ensuring the directory entry is updated after each
           write.
          */
-#if CONFIG_HAL_BOARD != HAL_BOARD_SITL
+#if CONFIG_HAL_BOARD != HAL_BOARD_SITL && CONFIG_HAL_BOARD_SUBTYPE != HAL_BOARD_SUBTYPE_LINUX_NONE
         last_io_operation = "fsync";
         AP::FS().fsync(_write_fd);
         last_io_operation = "";

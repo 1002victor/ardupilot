@@ -17,10 +17,13 @@ import sys
 import time
 import traceback
 
+import apmrover2
 import arducopter
 import arduplane
+import ardusub
+import antennatracker
 import quadplane
-
+import balancebot
 
 import examples
 from pysim import util
@@ -171,7 +174,10 @@ def param_parse_filepath():
 
 def all_vehicles():
     return ('ArduPlane',
-            'ArduCopter',)
+            'ArduCopter',
+            'APMrover2',
+            'AntennaTracker',
+            'ArduSub')
 
 
 def build_parameters():
@@ -246,8 +252,13 @@ def should_run_step(step):
 __bin_names = {
     "ArduCopter": "arducopter",
     "ArduPlane": "arduplane",
+    "APMrover2": "ardurover",
+    "AntennaTracker": "antennatracker",
     "CopterAVC": "arducopter-heli",
     "QuadPlane": "arduplane",
+    "ArduSub": "ardusub",
+    "balancebot": "ardurover",
+    "BalanceBot": "ardurover",
 }
 
 
@@ -293,7 +304,11 @@ tester_class_map = {
     "fly.ArduCopter": arducopter.AutoTestCopter,
     "fly.ArduPlane": arduplane.AutoTestPlane,
     "fly.QuadPlane": quadplane.AutoTestQuadPlane,
+    "drive.APMrover2": apmrover2.AutoTestRover,
+    "drive.balancebot": balancebot.AutoTestBalanceBot,
     "fly.CopterAVC": arducopter.AutoTestHeli,
+    "dive.ArduSub": ardusub.AutoTestSub,
+    "test.AntennaTracker": antennatracker.AutoTestTracker,
 }
 
 def run_specific_test(step, *args, **kwargs):
@@ -334,13 +349,20 @@ def run_step(step):
     if step == 'build.ArduPlane':
         vehicle_binary = 'bin/arduplane'
 
+    if step == 'build.APMrover2':
+        vehicle_binary = 'bin/ardurover'
 
     if step == 'build.ArduCopter':
         vehicle_binary = 'bin/arducopter'
 
+    if step == 'build.AntennaTracker':
+        vehicle_binary = 'bin/antennatracker'
+
     if step == 'build.Helicopter':
         vehicle_binary = 'bin/arducopter-heli'
 
+    if step == 'build.ArduSub':
+        vehicle_binary = 'bin/ardusub'
 
     if vehicle_binary is not None:
         return util.build_SITL(vehicle_binary, **build_opts)
@@ -523,6 +545,8 @@ def write_fullresults():
     results.addglob('APM:Libraries documentation', 'docs/libraries/index.html')
     results.addglob('APM:Plane documentation', 'docs/ArduPlane/index.html')
     results.addglob('APM:Copter documentation', 'docs/ArduCopter/index.html')
+    results.addglob('APM:Rover documentation', 'docs/APMrover2/index.html')
+    results.addglob('APM:Sub documentation', 'docs/ArduSub/index.html')
     results.addglobimage("Flight Track", '*.png')
 
     write_webresults(results)
@@ -733,6 +757,10 @@ if __name__ == "__main__":
         'fly.ArduPlane',
         'fly.QuadPlane',
 
+        'build.APMrover2',
+        'defaults.APMrover2',
+        'drive.APMrover2',
+        'drive.balancebot',
 
         'build.ArduCopter',
         'defaults.ArduCopter',
@@ -741,6 +769,13 @@ if __name__ == "__main__":
         'build.Helicopter',
         'fly.CopterAVC',
 
+        'build.AntennaTracker',
+        'defaults.AntennaTracker',
+        'test.AntennaTracker',
+
+        'build.ArduSub',
+        'defaults.ArduSub',
+        'dive.ArduSub',
 
         'convertgpx',
     ]

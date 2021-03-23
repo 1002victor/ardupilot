@@ -224,9 +224,13 @@ def kill_tasks():
             'lt-JSBSim',
             'ArduPlane.elf',
             'ArduCopter.elf',
+            'ArduSub.elf',
+            'APMrover2.elf',
+            'AntennaTracker.elf',
             'JSBSIm.exe',
             'MAVProxy.exe',
             'runsim.py',
+            'AntennaTracker.elf',
             'scrimmage'
         }
         for vehicle in vinfo.options:
@@ -505,6 +509,33 @@ def run_in_terminal_window(autotest, name, cmd):
 
 
 tracker_uarta = None  # blemish
+
+
+def start_antenna_tracker(autotest, opts):
+    """Compile and run the AntennaTracker, add tracker to mavproxy"""
+
+    global tracker_uarta
+    progress("Preparing antenna tracker")
+    tracker_home = find_location_by_name(find_autotest_dir(),
+                                         opts.tracker_location)
+    vehicledir = os.path.join(autotest, "../../" + "AntennaTracker")
+    options = vinfo.options["AntennaTracker"]
+    tracker_default_frame = options["default_frame"]
+    tracker_frame_options = options["frames"][tracker_default_frame]
+    do_build(vehicledir, opts, tracker_frame_options)
+    tracker_instance = 1
+    oldpwd = os.getcwd()
+    os.chdir(vehicledir)
+    tracker_uarta = "tcp:127.0.0.1:" + str(5760 + 10 * tracker_instance)
+    exe = os.path.join(vehicledir, "AntennaTracker.elf")
+    run_in_terminal_window(autotest,
+                           "AntennaTracker",
+                           ["nice",
+                            exe,
+                            "-I" + str(tracker_instance),
+                            "--model=tracker",
+                            "--home=" + tracker_home])
+    os.chdir(oldpwd)
 
 
 def start_vehicle(binary, autotest, opts, stuff, loc=None):
@@ -1049,6 +1080,10 @@ if not os.path.exists(vehicle_dir):
 if not cmd_opts.hil:
     if cmd_opts.instance == 0:
         kill_tasks()
+
+if cmd_opts.tracker:
+    start_antenna_tracker(find_autotest_dir(), cmd_opts)
+
 if cmd_opts.custom_location:
     location = cmd_opts.custom_location
     progress("Starting up at %s" % (location,))

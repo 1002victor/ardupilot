@@ -5,7 +5,7 @@ check firmware-version.txt in binaries directory
 
 import os
 
-VEHICLES = ['Copter', 'Plane']
+VEHICLES = ['AntennaTracker', 'Copter', 'Plane', 'Rover', 'Sub']
 
 def parse_git_version(gfile):
     '''parse git-version.txt, producing a firmware-version.txt'''

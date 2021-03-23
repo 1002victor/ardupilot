@@ -8,4 +8,5 @@ class VehicleType():
 VehicleTypeString = {
     17: "ArduPlane",
     23: "ArduCopter",
+    37: "ArduRover"
 }

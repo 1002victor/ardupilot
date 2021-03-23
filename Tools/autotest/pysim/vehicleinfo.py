@@ -218,8 +218,66 @@ class VehicleInfo(object):
             },
         },
     },
-
-
+    "APMrover2": {
+        "default_frame": "rover",
+        "frames": {
+            # ROVER
+            "rover": {
+                "waf_target": "bin/ardurover",
+                "default_params_filename": "default_params/rover.parm",
+            },
+            "rover-skid": {
+                "waf_target": "bin/ardurover",
+                "default_params_filename": ["default_params/rover.parm",
+                                            "default_params/rover-skid.parm"],
+            },
+            "balancebot": {
+                "waf_target": "bin/ardurover",
+                "default_params_filename": ["default_params/rover.parm",
+                                            "default_params/rover-skid.parm",
+                                            "default_params/balancebot.parm"],
+            },
+            "sailboat": {
+                "waf_target": "bin/ardurover",
+                "default_params_filename": ["default_params/rover.parm",
+                                            "default_params/sailboat.parm"],
+            },
+            "sailboat-motor": {
+                "waf_target": "bin/ardurover",
+                "default_params_filename": ["default_params/rover.parm",
+                                            "default_params/sailboat-motor.parm"],
+            },
+            "gazebo-rover": {
+                "waf_target": "bin/ardurover",
+                "default_params_filename": ["default_params/rover.parm",
+                                            "default_params/rover-skid.parm"],
+            },
+            "calibration": {
+                "extra_mavlink_cmds": "module load sitl_calibration;",
+            },
+        },
+    },
+    "ArduSub": {
+        "default_frame": "vectored",
+        "frames": {
+            "vectored": {
+                "waf_target": "bin/ardusub",
+                "default_params_filename": "default_params/sub.parm",
+            },
+            "gazebo-bluerov2": {
+                "waf_target": "bin/ardusub",
+                "default_params_filename": "default_params/sub.parm",
+            },
+        },
+    },
+    "AntennaTracker": {
+        "default_frame": "tracker",
+        "frames": {
+            "tracker": {
+                "waf_target": "bin/antennatracker",
+            },
+        },
+    },
 }
 
 
