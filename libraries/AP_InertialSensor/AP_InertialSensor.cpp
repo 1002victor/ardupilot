@@ -11,15 +11,12 @@
 #include <AP_AHRS/AP_AHRS.h>
 
 #include "AP_InertialSensor.h"
-#include "AP_InertialSensor_BMI160.h"
 #include "AP_InertialSensor_Backend.h"
 #include "AP_InertialSensor_HIL.h"
-#include "AP_InertialSensor_L3G4200D.h"
 #include "AP_InertialSensor_LSM9DS0.h"
 #include "AP_InertialSensor_LSM9DS1.h"
 #include "AP_InertialSensor_Invensense.h"
 #include "AP_InertialSensor_SITL.h"
-#include "AP_InertialSensor_RST.h"
 #include "AP_InertialSensor_BMI055.h"
 #include "AP_InertialSensor_BMI088.h"
 #include "AP_InertialSensor_Invensensev2.h"

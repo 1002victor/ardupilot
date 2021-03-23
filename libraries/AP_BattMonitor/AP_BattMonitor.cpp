@@ -1,7 +1,6 @@
 #include "AP_BattMonitor.h"
 #include "AP_BattMonitor_Analog.h"
 #include "AP_BattMonitor_SMBus.h"
-#include "AP_BattMonitor_Bebop.h"
 #include "AP_BattMonitor_BLHeliESC.h"
 #include "AP_BattMonitor_SMBus_SUI.h"
 #include "AP_BattMonitor_SMBus_NeoDesign.h"
@@ -140,11 +139,6 @@ AP_BattMonitor::init()
                                                                                             100000, true, 20));
                 break;
 #endif // HAL_BATTMON_SMBUS_ENABLE
-            case AP_BattMonitor_Params::BattMonitor_TYPE_BEBOP:
-#if CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_BEBOP || CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_DISCO
-                drivers[instance] = new AP_BattMonitor_Bebop(*this, state[instance], _params[instance]);
-#endif
-                break;
             case AP_BattMonitor_Params::BattMonitor_TYPE_UAVCAN_BatteryInfo:
 #if HAL_WITH_UAVCAN
                 drivers[instance] = new AP_BattMonitor_UAVCAN(*this, state[instance], AP_BattMonitor_UAVCAN::UAVCAN_BATTERY_INFO, _params[instance]);

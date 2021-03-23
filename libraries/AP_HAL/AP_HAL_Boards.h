@@ -125,12 +125,8 @@
 
 #if CONFIG_HAL_BOARD == HAL_BOARD_SITL
     #include <AP_HAL/board/sitl.h>
-#elif CONFIG_HAL_BOARD == HAL_BOARD_LINUX
-    #include <AP_HAL/board/linux.h>
 #elif CONFIG_HAL_BOARD == HAL_BOARD_EMPTY
     #include <AP_HAL/board/empty.h>
-#elif CONFIG_HAL_BOARD == HAL_BOARD_VRBRAIN
-    #include <AP_HAL/board/vrbrain.h>
 #elif CONFIG_HAL_BOARD == HAL_BOARD_CHIBIOS
 	#include <AP_HAL/board/chibios.h>
 #else

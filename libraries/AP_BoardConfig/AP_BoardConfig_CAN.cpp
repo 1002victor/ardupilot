@@ -23,9 +23,7 @@
 
 #if HAL_WITH_UAVCAN
 
-#if CONFIG_HAL_BOARD == HAL_BOARD_LINUX
-#include <AP_HAL_Linux/CAN.h>
-#elif CONFIG_HAL_BOARD == HAL_BOARD_CHIBIOS
+#if CONFIG_HAL_BOARD == HAL_BOARD_CHIBIOS
 #include <AP_HAL_ChibiOS/CAN.h>
 #include <AP_HAL_ChibiOS/CANSerialRouter.h>
 #endif
@@ -112,9 +110,7 @@ void AP_BoardConfig_CAN::init()
             if (hal.can_mgr[drv_num - 1] == nullptr) {
                 // CAN Manager is the driver
                 // So if this driver was not created before for other physical interface - do it
-                #if CONFIG_HAL_BOARD == HAL_BOARD_LINUX
-                    const_cast <AP_HAL::HAL&> (hal).can_mgr[drv_num - 1] = new Linux::CANManager;
-                #elif CONFIG_HAL_BOARD == HAL_BOARD_CHIBIOS
+                #if CONFIG_HAL_BOARD == HAL_BOARD_CHIBIOS
                     const_cast <AP_HAL::HAL&> (hal).can_mgr[drv_num - 1] = new ChibiOS::CANManager;
                 #endif
             }

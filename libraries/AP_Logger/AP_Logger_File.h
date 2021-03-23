@@ -44,7 +44,7 @@ public:
     uint16_t get_num_logs() override;
     uint16_t start_new_log(void) override;
 
-#if CONFIG_HAL_BOARD == HAL_BOARD_SITL || CONFIG_HAL_BOARD == HAL_BOARD_LINUX
+#if CONFIG_HAL_BOARD == HAL_BOARD_SITL 
     void flush(void) override;
 #endif
     void periodic_1Hz() override;
@@ -102,7 +102,7 @@ private:
     bool file_exists(const char *filename) const;
     bool log_exists(const uint16_t lognum) const;
 
-#if CONFIG_HAL_BOARD == HAL_BOARD_SITL || CONFIG_HAL_BOARD == HAL_BOARD_LINUX
+#if CONFIG_HAL_BOARD == HAL_BOARD_SITL 
     // I always seem to have less than 10% free space on my laptop:
     const float min_avail_space_percent = 0.1f;
 #else

@@ -18,14 +18,8 @@
 #include "AP_RangeFinder_PulsedLightLRF.h"
 #include "AP_RangeFinder_MaxsonarI2CXL.h"
 #include "AP_RangeFinder_MaxsonarSerialLV.h"
-#include "AP_RangeFinder_BBB_PRU.h"
 #include "AP_RangeFinder_LightWareI2C.h"
 #include "AP_RangeFinder_LightWareSerial.h"
-#if (CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_BEBOP || \
-     CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_DISCO) &&      \
-    defined(HAVE_LIBIIO)
-#include "AP_RangeFinder_Bebop.h"
-#endif
 #include "AP_RangeFinder_MAVLink.h"
 #include "AP_RangeFinder_LeddarOne.h"
 #include "AP_RangeFinder_uLanding.h"
@@ -400,13 +394,7 @@ void RangeFinder::detect_instance(uint8_t instance, uint8_t& serial_instance)
 #endif
         break;
 #endif
-#if CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_BBBMINI
-    case RangeFinder_TYPE_BBB_PRU:
-        if (AP_RangeFinder_BBB_PRU::detect()) {
-            drivers[instance] = new AP_RangeFinder_BBB_PRU(state[instance], params[instance]);
-        }
-        break;
-#endif
+
     case RangeFinder_TYPE_LWSER:
         if (AP_RangeFinder_LightWareSerial::detect(serial_instance)) {
             drivers[instance] = new AP_RangeFinder_LightWareSerial(state[instance], params[instance], serial_instance++);
@@ -422,14 +410,6 @@ void RangeFinder::detect_instance(uint8_t instance, uint8_t& serial_instance)
             drivers[instance] = new AP_RangeFinder_uLanding(state[instance], params[instance], serial_instance++);
         }
         break;
-#if (CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_BEBOP || \
-     CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_DISCO) && defined(HAVE_LIBIIO)
-    case RangeFinder_TYPE_BEBOP:
-        if (AP_RangeFinder_Bebop::detect()) {
-            drivers[instance] = new AP_RangeFinder_Bebop(state[instance], params[instance]);
-        }
-        break;
-#endif
     case RangeFinder_TYPE_MAVLink:
 #ifndef HAL_BUILD_AP_PERIPH
         if (AP_RangeFinder_MAVLink::detect()) {

@@ -1,6 +1,5 @@
 #include <AP_BoardConfig/AP_BoardConfig.h>
 #include "OpticalFlow.h"
-#include "AP_OpticalFlow_Onboard.h"
 #include "AP_OpticalFlow_SITL.h"
 #include "AP_OpticalFlow_Pixart.h"
 #include "AP_OpticalFlow_PX4Flow.h"
@@ -14,8 +13,6 @@ extern const AP_HAL::HAL& hal;
 #ifndef OPTICAL_FLOW_TYPE_DEFAULT
  #if CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_CHIBIOS_SKYVIPER_F412 || defined(HAL_HAVE_PIXARTFLOW_SPI)
   #define OPTICAL_FLOW_TYPE_DEFAULT OpticalFlowType::PIXART
- #elif CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_BEBOP
-  #define OPTICAL_FLOW_TYPE_DEFAULT OpticalFlowType::BEBOP
  #else
   #define OPTICAL_FLOW_TYPE_DEFAULT OpticalFlowType::NONE
  #endif
@@ -121,11 +118,6 @@ void OpticalFlow::init(uint32_t log_bit)
         if (backend == nullptr) {
             backend = AP_OpticalFlow_Pixart::detect("pixartPC15", *this);
         }
-        break;
-    case OpticalFlowType::BEBOP:
-#if CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_BEBOP
-        backend = new AP_OpticalFlow_Onboard(*this);
-#endif
         break;
     case OpticalFlowType::CXOF:
         backend = AP_OpticalFlow_CXOF::detect(*this);

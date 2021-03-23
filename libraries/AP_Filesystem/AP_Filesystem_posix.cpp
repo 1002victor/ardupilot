@@ -18,7 +18,7 @@
 #include "AP_Filesystem.h"
 #include <AP_HAL/AP_HAL.h>
 
-#if CONFIG_HAL_BOARD == HAL_BOARD_SITL || CONFIG_HAL_BOARD == HAL_BOARD_LINUX
+#if CONFIG_HAL_BOARD == HAL_BOARD_SITL
 
 #if defined(__APPLE__)
 #include <sys/mount.h>

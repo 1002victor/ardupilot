@@ -46,7 +46,6 @@ public:
         NONE = 0,
         PX4FLOW = 1,
         PIXART = 2,
-        BEBOP = 3,
         CXOF = 4,
         MAVLINK = 5,
         UAVCAN = 6,

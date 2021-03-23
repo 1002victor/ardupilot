@@ -29,8 +29,6 @@
 #include "ToshibaLED_I2C.h"
 #include "VRBoard_LED.h"
 #include "DiscreteRGBLed.h"
-#include "DiscoLED.h"
-#include "Led_Sysfs.h"
 #include "UAVCAN_RGB_LED.h"
 #include "SITL_SFML_LED.h"
 #include <stdio.h>
@@ -53,36 +51,6 @@ AP_Notify *AP_Notify::_singleton;
 #ifndef BUILD_DEFAULT_LED_TYPE
 #if CONFIG_HAL_BOARD == HAL_BOARD_CHIBIOS
   #define BUILD_DEFAULT_LED_TYPE (Notify_LED_Board | I2C_LEDS)
-
-// Linux boards    
-#elif CONFIG_HAL_BOARD == HAL_BOARD_LINUX
-  #if CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_NAVIO
-    #define BUILD_DEFAULT_LED_TYPE (Notify_LED_Board | I2C_LEDS |\
-                                    Notify_LED_PCA9685LED_I2C_External)
-
-  #elif CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_NAVIO2
-    #define BUILD_DEFAULT_LED_TYPE (Notify_LED_Board | I2C_LEDS)
-
-  #elif CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_EDGE
-    #define BUILD_DEFAULT_LED_TYPE (Notify_LED_Board | I2C_LEDS |\
-                                    Notify_LED_UAVCAN)
-  #elif CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_BBBMINI || \
-        CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_BLUE || \
-        CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_POCKET || \
-        CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_ERLEBRAIN2 || \
-        CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_PXFMINI || \
-        CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_BH || \
-        CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_DISCO
-    #define BUILD_DEFAULT_LED_TYPE (Notify_LED_Board)
-
-  #elif CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_RST_ZYNQ
-    #define BUILD_DEFAULT_LED_TYPE (Notify_LED_ToshibaLED_I2C_External)
-
-  #else // other linux
-    #define BUILD_DEFAULT_LED_TYPE (Notify_LED_Board | I2C_LEDS)
-  #endif
-
-// All other builds
 #else
     #define BUILD_DEFAULT_LED_TYPE (Notify_LED_Board | I2C_LEDS)
 
@@ -220,18 +188,6 @@ void AP_Notify::add_backends(void)
                 break;
             case Notify_LED_Board:
                 // select the most appropriate built in LED driver type
-#if CONFIG_HAL_BOARD == HAL_BOARD_LINUX
-  #if CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_NAVIO2
-                ADD_BACKEND(new Led_Sysfs("rgb_led0", "rgb_led2", "rgb_led1"));
-  #elif CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_EDGE
-                ADD_BACKEND(new RCOutputRGBLedInverted(12, 13, 14));
-  #elif CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_BH
-                ADD_BACKEND(new RCOutputRGBLed(HAL_RCOUT_RGBLED_RED, HAL_RCOUT_RGBLED_GREEN, HAL_RCOUT_RGBLED_BLUE));
-  #elif CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_DISCO
-                ADD_BACKEND(new DiscoLED());
-  #endif
-#endif // CONFIG_HAL_BOARD == HAL_BOARD_LINUX
-
 #if CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_CHIBIOS_VRBRAIN_V51 || CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_CHIBIOS_VRBRAIN_V52 || CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_CHIBIOS_VRUBRAIN_V51 || CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_CHIBIOS_VRCORE_V10 || CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_CHIBIOS_VRBRAIN_V54
                 ADD_BACKEND(new ExternalLED()); // despite the name this is a built in set of onboard LED's
 #endif // CONFIG_HAL_BOARD_SUBTYPE == various CHIBIOS-VRBRAINs
@@ -288,45 +244,22 @@ void AP_Notify::add_backends(void)
 
         }
     }
-
-
     // Always try and add a display backend
     ADD_BACKEND(new Display());
 
 // ChibiOS noise makers
 #if CONFIG_HAL_BOARD == HAL_BOARD_CHIBIOS
     ADD_BACKEND(new Buzzer());
-#ifdef HAL_PWM_ALARM
-    ADD_BACKEND(new AP_ToneAlarm());
-#endif
-
-// Linux noise makers
-#elif CONFIG_HAL_BOARD == HAL_BOARD_LINUX
-  #if CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_NAVIO || \
-      CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_NAVIO2 || \
-      CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_EDGE || \
-      CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_ERLEBRAIN2 || \
-      CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_PXFMINI || \
-      CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_RST_ZYNQ || \
-      CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_BLUE
-    // No noise makers, keep this though to ensure that the final else is safe
-
-  #elif CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_BBBMINI || \
-        CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_POCKET
-    ADD_BACKEND(new Buzzer());
-
-  #else // other linux
-    ADD_BACKEND(new AP_ToneAlarm());
-  #endif
-
+    #ifdef HAL_PWM_ALARM
+        ADD_BACKEND(new AP_ToneAlarm());
+    #endif
 #elif CONFIG_HAL_BOARD == HAL_BOARD_SITL
     ADD_BACKEND(new AP_ToneAlarm());
     ADD_BACKEND(new Buzzer());
-#ifdef WITH_SITL_RGBLED
-    ADD_BACKEND(new SITL_SFML_LED());
-#endif
+    #ifdef WITH_SITL_RGBLED
+        ADD_BACKEND(new SITL_SFML_LED());
+    #endif
 #endif // Noise makers
-
 }
 
 // initialisation

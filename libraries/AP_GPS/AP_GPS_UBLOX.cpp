@@ -26,13 +26,7 @@
 #include "RTCM3_Parser.h"
 #include <stdio.h>
 
-#if CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_NAVIO || \
-    CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_LINUX_BH
-    #define UBLOX_SPEED_CHANGE  1
-#else
-    #define UBLOX_SPEED_CHANGE 0
-#endif
-
+#define UBLOX_SPEED_CHANGE 0
 
 #define UBLOX_DEBUGGING 0
 #define UBLOX_FAKE_3DLOCK 0
