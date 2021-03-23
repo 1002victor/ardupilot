@@ -19,10 +19,8 @@
 
 bool ModeAutorotate::init(bool ignore_checks)
 {
-#if FRAME_CONFIG != HELI_FRAME
     // Only allow trad heli to use autorotation mode
     return false;
-#endif
 
     // Check that mode is enabled
     if (!g2.arot.is_enable()) {

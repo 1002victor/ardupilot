@@ -85,9 +85,6 @@ bool ModeSystemId::init(bool ignore_checks)
         return false;
     }
 
-#if FRAME_CONFIG == HELI_FRAME
-    copter.input_manager.set_use_stab_col(true);
-#endif
 
     att_bf_feedforward = attitude_control->get_bf_feedforward();
     waveform_time = 0.0f;
@@ -159,11 +156,8 @@ void ModeSystemId::run()
     }
 
     // get pilot's desired throttle
-#if FRAME_CONFIG == HELI_FRAME
-    float pilot_throttle_scaled = copter.input_manager.get_pilot_desired_collective(channel_throttle->get_control_in());
-#else
-    float pilot_throttle_scaled = get_pilot_desired_throttle();
-#endif
+float pilot_throttle_scaled = get_pilot_desired_throttle();
+
 
     if ((systemid_state == SystemIDModeState::SYSTEMID_STATE_TESTING) &&
         (!is_positive(frequency_start) || !is_positive(frequency_stop) || is_negative(time_fade_in) || !is_positive(time_record) || is_negative(time_fade_out) || (time_record <= time_const_freq))) {

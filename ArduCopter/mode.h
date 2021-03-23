@@ -277,23 +277,6 @@ private:
 };
 #endif
 
-#if FRAME_CONFIG == HELI_FRAME
-class ModeAcro_Heli : public ModeAcro {
-
-public:
-    // inherit constructor
-    using ModeAcro::Mode;
-
-    bool init(bool ignore_checks) override;
-    void run() override;
-    void virtual_flybar( float &roll_out, float &pitch_out, float &yaw_out, float pitch_leak, float roll_leak);
-
-protected:
-private:
-};
-#endif
-
-
 class ModeAltHold : public Mode {
 
 public:
@@ -1156,23 +1139,6 @@ protected:
 private:
 
 };
-
-#if FRAME_CONFIG == HELI_FRAME
-class ModeStabilize_Heli : public ModeStabilize {
-
-public:
-    // inherit constructor
-    using ModeStabilize::Mode;
-
-    bool init(bool ignore_checks) override;
-    void run() override;
-
-protected:
-
-private:
-
-};
-#endif
 
 class ModeSystemId : public Mode {
 

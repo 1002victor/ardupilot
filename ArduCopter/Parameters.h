@@ -164,19 +164,6 @@ public:
         k_param_single_servo_3,         // remove
         k_param_single_servo_4,         // 78 - remove
 
-        //
-        // 80: Heli
-        //
-        k_param_heli_servo_1 = 80,  // remove
-        k_param_heli_servo_2,       // remove
-        k_param_heli_servo_3,       // remove
-        k_param_heli_servo_4,       // remove
-        k_param_heli_pitch_ff,      // remove
-        k_param_heli_roll_ff,       // remove
-        k_param_heli_yaw_ff,        // remove
-        k_param_heli_stab_col_min,  // remove
-        k_param_heli_stab_col_max,  // remove
-        k_param_heli_servo_rsc,     // 89 = full! - remove
 
         //
         // 90: misc2

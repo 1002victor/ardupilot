@@ -44,7 +44,6 @@
 #include <AP_NavEKF3/AP_NavEKF3.h>
 #include <AP_Mission/AP_Mission.h>     // Mission command library
 #include <AC_AttitudeControl/AC_AttitudeControl_Multi.h> // Attitude control library
-#include <AC_AttitudeControl/AC_AttitudeControl_Heli.h> // Attitude control library for traditional helicopter
 #include <AC_AttitudeControl/AC_PosControl.h>      // Position control library
 #include <AP_Motors/AP_Motors.h>          // AP Motors library
 #include <AP_Stats/AP_Stats.h>     // statistics library
@@ -61,7 +60,6 @@
 #include <AP_BattMonitor/AP_BattMonitor.h>     // Battery monitor library
 #include <AP_LandingGear/AP_LandingGear.h>     // Landing Gear library
 #include <AC_InputManager/AC_InputManager.h>        // Pilot input handling library
-#include <AC_InputManager/AC_InputManager_Heli.h>   // Heli specific pilot input handling library
 #include <AP_Arming/AP_Arming.h>
 #include <AP_SmartRTL/AP_SmartRTL.h>
 #include <AP_TempCalibration/AP_TempCalibration.h>
@@ -72,17 +70,12 @@
 #include "defines.h"
 #include "config.h"
 
-#if FRAME_CONFIG == HELI_FRAME
-    #define AC_AttitudeControl_t AC_AttitudeControl_Heli
-#else
-    #define AC_AttitudeControl_t AC_AttitudeControl_Multi
-#endif
 
-#if FRAME_CONFIG == HELI_FRAME
- #define MOTOR_CLASS AP_MotorsHeli
-#else
- #define MOTOR_CLASS AP_MotorsMulticopter
-#endif
+#define AC_AttitudeControl_t AC_AttitudeControl_Multi
+
+
+#define MOTOR_CLASS AP_MotorsMulticopter
+
 
 #if MODE_AUTOROTATE_ENABLED == ENABLED
  #include <AC_Autorotation/AC_Autorotation.h> // Autorotation controllers
@@ -212,7 +205,6 @@ public:
 
     friend class Mode;
     friend class ModeAcro;
-    friend class ModeAcro_Heli;
     friend class ModeAltHold;
     friend class ModeAuto;
     friend class ModeAutoTune;
@@ -231,7 +223,6 @@ public:
     friend class ModeSmartRTL;
     friend class ModeSport;
     friend class ModeStabilize;
-    friend class ModeStabilize_Heli;
     friend class ModeSystemId;
     friend class ModeThrow;
     friend class ModeZigZag;
@@ -550,12 +541,6 @@ private:
     AC_PrecLand precland;
 #endif
 
-    // Pilot Input Management Library
-    // Only used for Helicopter for now
-#if FRAME_CONFIG == HELI_FRAME
-    AC_InputManager_Heli input_manager;
-#endif
-
 #if ADSB_ENABLED == ENABLED
     AP_ADSB adsb;
 
@@ -572,23 +557,6 @@ private:
     // Top-level logic
     // setup the var_info table
     AP_Param param_loader;
-
-#if FRAME_CONFIG == HELI_FRAME
-    // Mode filter to reject RC Input glitches.  Filter size is 5, and it draws the 4th element, so it can reject 3 low glitches,
-    // and 1 high glitch.  This is because any "off" glitches can be highly problematic for a helicopter running an ESC
-    // governor.  Even a single "off" frame can cause the rotor to slow dramatically and take a long time to restart.
-    ModeFilterInt16_Size5 rotor_speed_deglitch_filter {4};
-
-    // Tradheli flags
-    typedef struct {
-        uint8_t dynamic_flight          : 1;    // 0   // true if we are moving at a significant speed (used to turn on/off leaky I terms)
-        uint8_t inverted_flight         : 1;    // 1   // true for inverted flight mode
-        uint8_t in_autorotation         : 1;    // 2   // true when heli is in autorotation
-    } heli_flags_t;
-    heli_flags_t heli_flags;
-
-    int16_t hover_roll_trim_scalar_slew;
-#endif
 
     // ground effect detector
     struct {
@@ -792,9 +760,6 @@ private:
     void Log_Write_Data(uint8_t id, float value);
     void Log_Write_Parameter_Tuning(uint8_t param, float tuning_val, float tune_min, float tune_max);
     void Log_Sensor_Health();
-#if FRAME_CONFIG == HELI_FRAME
-    void Log_Write_Heli(void);
-#endif
     void Log_Write_Precland();
     void Log_Write_GuidedTarget(uint8_t target_type, const Vector3f& pos_target, const Vector3f& vel_target);
     void Log_Write_SysID_Setup(uint8_t systemID_axis, float waveform_magnitude, float frequency_start, float frequency_stop, float time_fade_in, float time_const_freq, float time_record, float time_fade_out);
@@ -919,11 +884,7 @@ private:
 
     Mode *flightmode;
 #if MODE_ACRO_ENABLED == ENABLED
-#if FRAME_CONFIG == HELI_FRAME
-    ModeAcro_Heli mode_acro;
-#else
     ModeAcro mode_acro;
-#endif
 #endif
     ModeAltHold mode_althold;
 #if MODE_AUTO_ENABLED == ENABLED
@@ -961,11 +922,7 @@ private:
 #if MODE_RTL_ENABLED == ENABLED
     ModeRTL mode_rtl;
 #endif
-#if FRAME_CONFIG == HELI_FRAME
-    ModeStabilize_Heli mode_stabilize;
-#else
     ModeStabilize mode_stabilize;
-#endif
 #if MODE_SPORT_ENABLED == ENABLED
     ModeSport mode_sport;
 #endif

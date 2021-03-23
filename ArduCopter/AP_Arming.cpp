@@ -146,12 +146,10 @@ bool AP_Arming_Copter::parameter_checks(bool display_failure)
     if ((checks_to_perform == ARMING_CHECK_ALL) || (checks_to_perform & ARMING_CHECK_PARAMETERS)) {
 
 	    // checks MOT_PWM_MIN/MAX for acceptable values
-#if (FRAME_CONFIG != HELI_FRAME)
         if (copter.motors->check_mot_pwm_params()) {
             check_failed(ARMING_CHECK_PARAMETERS, display_failure, "Check MOT_PWM_MAX/MIN");
             return false;
         } 
-#endif
 
         // ensure all rc channels have different functions
         if (rc().duplicate_options_exist()) {
@@ -188,47 +186,13 @@ bool AP_Arming_Copter::parameter_checks(bool display_failure)
             return false;
         }
 
-        #if FRAME_CONFIG == HELI_FRAME
-        if (copter.g2.frame_class.get() != AP_Motors::MOTOR_FRAME_HELI_QUAD &&
-            copter.g2.frame_class.get() != AP_Motors::MOTOR_FRAME_HELI_DUAL &&
-            copter.g2.frame_class.get() != AP_Motors::MOTOR_FRAME_HELI) {
-            check_failed(ARMING_CHECK_PARAMETERS, display_failure, "Invalid Heli FRAME_CLASS");
-            return false;
-        }
-
-        // check helicopter parameters
-        if (!copter.motors->parameter_check(display_failure)) {
-            check_failed(ARMING_CHECK_PARAMETERS, display_failure, "Heli motors checks failed");
-            return false;
-        }
-
-        char fail_msg[50];
-        // check input mangager parameters
-        if (!copter.input_manager.parameter_check(fail_msg, ARRAY_SIZE(fail_msg))) {
-            check_failed(ARMING_CHECK_PARAMETERS, display_failure, "%s", fail_msg);
-            return false;
-        }
-
-        // Inverted flight feature disabled for Heli Single and Dual frames
-        if (copter.g2.frame_class.get() != AP_Motors::MOTOR_FRAME_HELI_QUAD &&
-            rc().find_channel_for_option(RC_Channel::aux_func_t::INVERTED) != nullptr) {
-            check_failed(ARMING_CHECK_PARAMETERS, display_failure, "Inverted flight option not supported");
-            return false;
-        }
-        // Ensure an Aux Channel is configured for motor interlock
-        if (rc().find_channel_for_option(RC_Channel::aux_func_t::MOTOR_INTERLOCK) == nullptr) {
-            check_failed(ARMING_CHECK_PARAMETERS, display_failure, "Motor Interlock not configured");
-            return false;
-        }
-
-        #else
         if (copter.g2.frame_class.get() == AP_Motors::MOTOR_FRAME_HELI_QUAD ||
             copter.g2.frame_class.get() == AP_Motors::MOTOR_FRAME_HELI_DUAL ||
             copter.g2.frame_class.get() == AP_Motors::MOTOR_FRAME_HELI) {
             check_failed(ARMING_CHECK_PARAMETERS, display_failure, "Invalid MultiCopter FRAME_CLASS");
             return false;
         }
-        #endif // HELI_FRAME
+
 
         // check for missing terrain data
         if (!pre_arm_terrain_check(display_failure)) {
@@ -267,16 +231,9 @@ bool AP_Arming_Copter::motor_checks(bool display_failure)
         return false;
     }
 
-	    //servo_test check
-#if FRAME_CONFIG == HELI_FRAME
-    if(copter.motors->servo_test_running()) {
-        check_failed(display_failure, "Servo Test is still running");
-        return false;
-    }
-#endif
 
     // if this is a multicopter using ToshibaCAN ESCs ensure MOT_PMW_MIN = 1000, MOT_PWM_MAX = 2000
-#if HAL_WITH_UAVCAN && (FRAME_CONFIG != HELI_FRAME)
+#if HAL_WITH_UAVCAN
     bool tcan_active = false;
     const uint8_t num_drivers = AP::can().get_num_drivers();
     for (uint8_t i = 0; i < num_drivers; i++) {
@@ -305,11 +262,7 @@ bool AP_Arming_Copter::pilot_throttle_checks(bool display_failure)
     // this is near the bottom to allow other failures to be displayed before checking pilot throttle
     if ((checks_to_perform == ARMING_CHECK_ALL) || (checks_to_perform & ARMING_CHECK_RC)) {
         if (copter.g.failsafe_throttle != FS_THR_DISABLED && copter.channel_throttle->get_radio_in() < copter.g.failsafe_throttle_value) {
-            #if FRAME_CONFIG == HELI_FRAME
-            const char *failmsg = "Collective below Failsafe";
-            #else
             const char *failmsg = "Throttle below Failsafe";
-            #endif
             check_failed(ARMING_CHECK_RC, display_failure, "%s", failmsg);
             return false;
         }
@@ -633,11 +586,7 @@ bool AP_Arming_Copter::arm_checks(AP_Arming::Method method)
 
     // check throttle
     if ((checks_to_perform == ARMING_CHECK_ALL) || (checks_to_perform & ARMING_CHECK_RC)) {
-         #if FRAME_CONFIG == HELI_FRAME
-        const char *rc_item = "Collective";
-        #else
         const char *rc_item = "Throttle";
-        #endif
         // check throttle is not too low - must be above failsafe throttle
         if (copter.g.failsafe_throttle != FS_THR_DISABLED && copter.channel_throttle->get_radio_in() < copter.g.failsafe_throttle_value) {
             check_failed(ARMING_CHECK_RC, true, "%s below failsafe", rc_item);
@@ -652,12 +601,10 @@ bool AP_Arming_Copter::arm_checks(AP_Arming::Method method)
                 return false;
             }
             // in manual modes throttle must be at zero
-            #if FRAME_CONFIG != HELI_FRAME
             if ((copter.flightmode->has_manual_throttle() || control_mode == Mode::Number::DRIFT) && copter.channel_throttle->get_control_in() > 0) {
                 check_failed(ARMING_CHECK_RC, true, "%s too high", rc_item);
                 return false;
             }
-            #endif
         }
     }
 
