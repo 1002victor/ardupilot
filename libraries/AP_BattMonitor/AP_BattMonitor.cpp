@@ -1,7 +1,6 @@
 #include "AP_BattMonitor.h"
 #include "AP_BattMonitor_Analog.h"
 #include "AP_BattMonitor_SMBus.h"
-#include "AP_BattMonitor_Bebop.h"
 #include "AP_BattMonitor_BLHeliESC.h"
 #include "AP_BattMonitor_SMBus_SUI.h"
 #include "AP_BattMonitor_SMBus_NeoDesign.h"

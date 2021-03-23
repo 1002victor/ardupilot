@@ -22,7 +22,9 @@
 
 // setup default mag orientation for some board types
 #ifndef MAG_BOARD_ORIENTATION
-define MAG_BOARD_ORIENTATION ROTATION_NONE
+
+# define MAG_BOARD_ORIENTATION ROTATION_NONE
+
 #endif
 
 #define COMPASS_CAL_ENABLED !defined(HAL_BUILD_AP_PERIPH)

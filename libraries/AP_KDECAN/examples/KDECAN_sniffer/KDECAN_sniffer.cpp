@@ -4,14 +4,12 @@
 #include <AP_Common/AP_Common.h>
 #include <AP_HAL/AP_HAL.h>
 
-#if (CONFIG_HAL_BOARD == HAL_BOARD_CHIBIOS || CONFIG_HAL_BOARD == HAL_BOARD_LINUX) && HAL_WITH_UAVCAN
+#if (CONFIG_HAL_BOARD == HAL_BOARD_CHIBIOS) && HAL_WITH_UAVCAN
 
 #include <AP_HAL/CAN.h>
 #include <AP_HAL/Semaphores.h>
 
-#if CONFIG_HAL_BOARD == HAL_BOARD_LINUX
-#include <AP_HAL_Linux/CAN.h>
-#elif CONFIG_HAL_BOARD == HAL_BOARD_CHIBIOS
+#if CONFIG_HAL_BOARD == HAL_BOARD_CHIBIOS
 #include <AP_HAL_ChibiOS/CAN.h>
 #endif
 
@@ -98,8 +96,6 @@ void KDECAN_sniffer::init(void)
 {
 #if CONFIG_HAL_BOARD == HAL_BOARD_CHIBIOS
     AP_HAL::CANManager* can_mgr = new ChibiOS::CANManager;
-#elif CONFIG_HAL_BOARD == HAL_BOARD_LINUX
-    AP_HAL::CANManager* can_mgr = new Linux::CANManager;
 #endif
     
     if (can_mgr == nullptr) {

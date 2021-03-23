@@ -567,47 +567,6 @@ class chibios(Board):
         if fun:
             fun(bld)
 
-class linux(Board):
-    def configure_env(self, cfg, env):
-        super(linux, self).configure_env(cfg, env)
-
-        env.DEFINES.update(
-            CONFIG_HAL_BOARD = 'HAL_BOARD_LINUX',
-            CONFIG_HAL_BOARD_SUBTYPE = 'HAL_BOARD_SUBTYPE_LINUX_NONE',
-        )
-
-        if not cfg.env.DEBUG:
-            env.CXXFLAGS += [
-                '-O3',
-            ]
-
-        env.LIB += [
-            'm',
-        ]
-
-        cfg.check_librt(env)
-        cfg.check_lttng(env)
-        cfg.check_libdl(env)
-        cfg.check_libiio(env)
-
-        env.LINKFLAGS += ['-pthread',]
-        env.AP_LIBRARIES += [
-            'AP_HAL_Linux',
-        ]
-
-        if self.with_uavcan:
-            cfg.define('UAVCAN_EXCEPTIONS', 0)
-
-        if cfg.options.apstatedir:
-            cfg.define('AP_STATEDIR', cfg.options.apstatedir)
-
-    def build(self, bld):
-        super(linux, self).build(bld)
-        if bld.options.upload:
-            waflib.Options.commands.append('rsync')
-            # Avoid infinite recursion
-            bld.options.upload = False
-
 
 class SITL_static(sitl):
     def configure_env(self, cfg, env):

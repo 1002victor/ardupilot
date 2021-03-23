@@ -21,8 +21,6 @@
 #define HAL_BOARD_SUBTYPE_LINUX_NONE       1000
 
 
-
-
 /* HAL CHIBIOS sub-types, starting at 5000 */
 #define HAL_BOARD_SUBTYPE_CHIBIOS_SKYVIPER_F412	5000
 #define HAL_BOARD_SUBTYPE_CHIBIOS_FMUV3         5001
@@ -44,7 +42,7 @@
 #define HAL_BOARD_SUBTYPE_CHIBIOS_VRBRAIN_V52   5017
 #define HAL_BOARD_SUBTYPE_CHIBIOS_VRUBRAIN_V51  5018
 #define HAL_BOARD_SUBTYPE_CHIBIOS_VRCORE_V10    5019
-#define HAL_BOARD_SUBTYPE_CHIBIOS_VRBRAIN_V54   5020
+
 
 /* InertialSensor driver types */
 #define HAL_INS_NONE         0
@@ -109,8 +107,6 @@
 
 #if CONFIG_HAL_BOARD == HAL_BOARD_SITL
     #include <AP_HAL/board/sitl.h>
-#elif CONFIG_HAL_BOARD == HAL_BOARD_LINUX
-    #include <AP_HAL/board/linux.h>
 #elif CONFIG_HAL_BOARD == HAL_BOARD_EMPTY
     #include <AP_HAL/board/empty.h>
 #elif CONFIG_HAL_BOARD == HAL_BOARD_CHIBIOS

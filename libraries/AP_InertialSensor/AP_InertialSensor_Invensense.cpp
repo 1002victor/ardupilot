@@ -27,9 +27,6 @@
 
 extern const AP_HAL::HAL& hal;
 
-#if CONFIG_HAL_BOARD == HAL_BOARD_LINUX
-#include <AP_HAL_Linux/GPIO.h>
-#endif
 
 #if CONFIG_HAL_BOARD == HAL_BOARD_CHIBIOS
 // hal.console can be accessed from bus threads on ChibiOS
