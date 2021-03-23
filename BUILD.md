@@ -225,10 +225,8 @@ program - one for each frame type.
 
 The main product groups are:
 
- - antennatracker
  - copter
  - plane
- - rover
 
 #### Building a program group ####
 

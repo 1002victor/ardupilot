@@ -652,34 +652,9 @@ is bob we will attempt to checkout bob-AVR'''
                            "arduplane",
                            "ArduPlane")
 
-    def build_antennatracker(self, tag):
-        '''build Tracker binaries'''
-        boards = self.common_boards()[:]
-        self.build_vehicle(tag,
-                           "AntennaTracker",
-                           boards,
-                           "AntennaTracker",
-                           "antennatracker",
-                           "AntennaTracker",)
 
-    def build_rover(self, tag):
-        '''build Rover binaries'''
-        boards = self.common_boards()
-        self.build_vehicle(tag,
-                           "Rover",
-                           boards,
-                           "Rover",
-                           "ardurover",
-                           "Rover")
 
-    def build_ardusub(self, tag):
-        '''build Sub binaries'''
-        self.build_vehicle(tag,
-                           "ArduSub",
-                           self.common_boards(),
-                           "Sub",
-                           "ardusub",
-                           "ArduSub")
+
 
     def build_AP_Periph(self, tag):
         '''build AP_Periph binaries'''
@@ -797,9 +772,7 @@ is bob we will attempt to checkout bob-AVR'''
             t0 = time.time()
             self.build_arducopter(tag)
             self.build_arduplane(tag)
-            self.build_rover(tag)
-            self.build_antennatracker(tag)
-            self.build_ardusub(tag)
+
             self.build_AP_Periph(tag)
             self.history.record_run(githash, tag, t0, time.time()-t0)
 

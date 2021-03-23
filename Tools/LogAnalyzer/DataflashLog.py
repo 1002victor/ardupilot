@@ -528,8 +528,7 @@ class DataflashLog(object):
     msg_vehicle_to_vehicle_map = {
         "ArduCopter": VehicleType.Copter,
         "APM:Copter": VehicleType.Copter,
-        "ArduPlane": VehicleType.Plane,
-        "ArduRover": VehicleType.Rover
+        "ArduPlane": VehicleType.Plane
     }
 
     # takes the vehicle type supplied via "MSG" and sets vehicleType from

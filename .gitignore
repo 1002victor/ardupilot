@@ -62,11 +62,8 @@ ArduCopter/way.txt
 ArduPlane/test.ArduPlane/
 ArduPlane/test/*
 ArduPlane/way.txt
-Build.APMrover2/*
-Build.AntennaTracker/*
 Build.ArduCopter/*
 Build.ArduPlane/*
-Build.ArduSub/*
 CMakeCache.txt
 CMakeFiles
 LASTLOG.TXT
@@ -118,8 +115,5 @@ way.txt
 segv_*out
 /scripts/
 /APMrover2/scripts/
-/AntennaTracker/scripts/
 /ArduCopter/scripts/
-/ArduPlane/scripts/
-/ArduSub/scripts/
 persistent.dat

@@ -10,7 +10,7 @@ import fnmatch
 import gen_stable
 import subprocess
 
-FIRMWARE_TYPES = ["AntennaTracker", "Copter", "Plane", "Rover", "Sub", "AP_Periph"]
+FIRMWARE_TYPES = ["Copter", "Plane", "AP_Periph"]
 RELEASE_TYPES = ["beta", "latest", "stable", "stable-*", "dirty"]
 
 # mapping for board names to brand name and manufacturer
@@ -97,9 +97,6 @@ class ManifestGenerator():
             "octa-quad": "ARDUPILOT_OCTAQUAD",
             "heli": "HELICOPTER",
             "Plane": "FIXED_WING",
-            "AntennaTracker": "ANTENNA_TRACKER",
-            "Rover": "GROUND_ROVER",
-            "Sub": "SUBMARINE",
             "AP_Periph": "CAN_PERIPHERAL",
         }
         if frame in frame_to_mavlink_dict:

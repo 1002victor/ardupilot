@@ -83,11 +83,8 @@ def error(str_to_print):
 
 
 truename_map = {
-    "Rover": "Rover",
-    "ArduSub": "Sub",
     "ArduCopter": "Copter",
     "ArduPlane": "Plane",
-    "AntennaTracker": "Tracker",
 }
 for vehicle_path in vehicle_paths:
     name = os.path.basename(os.path.dirname(vehicle_path))

@@ -8,7 +8,7 @@
 
 #include <AP_HAL/AP_HAL.h>
 
-#if defined(HAL_RCINPUT_WITH_AP_RADIO) && CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_CHIBIOS_SKYVIPER_F412
+#if defined(HAL_RCINPUT_WITH_AP_RADIO)
 
 #define SUPPORT_BK_DEBUG_PINS 0 // 0=UART6 is for GPS, 1=UART6 is debug gpio
 #define TX_SPEED 250u // Default transmit speed in kilobits per second.
@@ -316,29 +316,6 @@ enum {
 // The default register values that are for the default power setting
 #define DEFAULT_OUTPUT_REG6 TOKENPASTE2(OUTPUT_POWER_REG6_,DEFAULT_OUTPUT_POWER)
 #define DEFAULT_OUTPUT_REG4 TOKENPASTE2(OUTPUT_POWER_REG4_,DEFAULT_OUTPUT_POWER)
-
-// This assumes we are using ChiBios instead of the pixhawk o/s for accessing GPIO
-#if CONFIG_HAL_BOARD_SUBTYPE == HAL_BOARD_SUBTYPE_CHIBIOS_SKYVIPER_F412
-#define BEKEN_SELECT()      (dev->set_chip_select(true))
-#define BEKEN_DESELECT()    (dev->set_chip_select(false))
-#define BEKEN_CE_HIGH()     (palSetLine(HAL_GPIO_PIN_RADIO_CE)) // (hal.gpio->write(HAL_CHIBIOS_GPIO_RADIO_CE, 1))
-#define BEKEN_CE_LOW()      (palClearLine(HAL_GPIO_PIN_RADIO_CE)) // (hal.gpio->write(HAL_CHIBIOS_GPIO_RADIO_CE, 0))
-#define BEKEN_PA_HIGH()     (palSetLine(HAL_GPIO_PIN_RADIO_PA_CTL)) // (hal.gpio->write(HAL_CHIBIOS_GPIO_RADIO_PA_CTL, 1))
-#define BEKEN_PA_LOW()      (palClearLine(HAL_GPIO_PIN_RADIO_PA_CTL)) // (hal.gpio->write(HAL_CHIBIOS_GPIO_RADIO_PA_CTL, 0))
-#if SUPPORT_BK_DEBUG_PINS
-#define DEBUG1_HIGH()       (palSetLine(HAL_GPIO_PIN_DEBUG1))
-#define DEBUG1_LOW()        (palClearLine(HAL_GPIO_PIN_DEBUG1))
-#define DEBUG2_HIGH()       (palSetLine(HAL_GPIO_PIN_DEBUG2))
-#define DEBUG2_LOW()        (palClearLine(HAL_GPIO_PIN_DEBUG2))
-#else
-#define DEBUG1_HIGH()       do {} while (0)
-#define DEBUG1_LOW()        do {} while (0)
-#define DEBUG2_HIGH()       do {} while (0)
-#define DEBUG2_LOW()        do {} while (0)
-#endif
-#else
-#error This configuration is not supported.
-#endif
 
 /** Parameters used by the fcc pretests */
 typedef struct FccParams_s {

@@ -96,11 +96,6 @@
 #define CHIBIOS_SHORT_BOARD_NAME CHIBIOS_BOARD_NAME
 #endif
 
-#ifndef CONFIG_HAL_BOARD_SUBTYPE
-// allow for generic boards
-#define CONFIG_HAL_BOARD_SUBTYPE HAL_BOARD_SUBTYPE_CHIBIOS_GENERIC
-#endif
-
 // we support RC serial for BLHeli pass-thru
 #define HAL_SUPPORT_RCOUT_SERIAL 1
 

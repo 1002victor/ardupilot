@@ -364,11 +364,6 @@ void LR_MsgHandler_MSG::process_message(uint8_t *msg)
 	::printf("Detected Copter\n");
 	ahrs.set_vehicle_class(AHRS_VEHICLE_COPTER);
 	ahrs.set_fly_forward(false);
-    } else if (strncmp(msg_text, "ArduRover", strlen("ArduRover")) == 0) {
-	vehicle = VehicleType::VEHICLE_ROVER;
-	::printf("Detected Rover\n");
-	ahrs.set_vehicle_class(AHRS_VEHICLE_GROUND);
-	ahrs.set_fly_forward(true);
     }
 }
 
