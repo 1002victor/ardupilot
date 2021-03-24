@@ -80,14 +80,6 @@ float Copter::get_pilot_desired_climb_rate(float throttle_control)
         return 0.0f;
     }
 
-#if TOY_MODE_ENABLED == ENABLED
-    if (g2.toy_mode.enabled()) {
-        // allow throttle to be reduced after throttle arming and for
-        // slower descent close to the ground
-        g2.toy_mode.throttle_adjust(throttle_control);
-    }
-#endif
-
     float desired_rate = 0.0f;
     float mid_stick = get_throttle_mid();
     float deadband_top = mid_stick + g.throttle_deadzone;

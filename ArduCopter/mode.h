@@ -13,7 +13,6 @@ public:
     // Auto Pilot Modes enumeration
     enum class Number : uint8_t {
         STABILIZE =     0,  // manual airframe angle with manual throttle
-        ACRO =          1,  // manual body-frame angular rate with manual throttle
         ALT_HOLD =      2,  // manual airframe angle with automatic throttle
         AUTO =          3,  // fully automatic waypoint control using mission commands
         GUIDED =        4,  // fully automatic fly to coordinate or fly at velocity/direction using GCS immediate commands
@@ -22,12 +21,9 @@ public:
         CIRCLE =        7,  // automatic circular flight with automatic throttle
         LAND =          9,  // automatic landing with horizontal position control
         DRIFT =        11,  // semi-automous position, yaw and throttle control
-        SPORT =        13,  // manual earth-frame angular rate control with manual throttle
-        FLIP =         14,  // automatically flip the vehicle on the roll axis
         AUTOTUNE =     15,  // automatically tune the vehicle's roll and pitch gains
         POSHOLD =      16,  // automatic position hold with manual override, with automatic throttle
         BRAKE =        17,  // full-brake using inertial/GPS system, no pilot input
-        THROW =        18,  // throw to launch mode using inertial/GPS system, no pilot input
         AVOID_ADSB =   19,  // automatic avoidance of obstacles in the macro scale - e.g. full-sized aircraft
         GUIDED_NOGPS = 20,  // guided mode but only accepts attitude and altitude
         SMART_RTL =    21,  // SMART_RTL returns to home by retracing its steps
@@ -248,34 +244,6 @@ public:
     // end pass-through functions
 };
 
-
-#if MODE_ACRO_ENABLED == ENABLED
-class ModeAcro : public Mode {
-
-public:
-    // inherit constructor
-    using Mode::Mode;
-
-    virtual void run() override;
-
-    bool requires_GPS() const override { return false; }
-    bool has_manual_throttle() const override { return true; }
-    bool allows_arming(bool from_gcs) const override { return true; };
-    bool is_autopilot() const override { return false; }
-
-protected:
-
-    const char *name() const override { return "ACRO"; }
-    const char *name4() const override { return "ACRO"; }
-
-    void get_pilot_desired_angle_rates(int16_t roll_in, int16_t pitch_in, int16_t yaw_in, float &roll_out, float &pitch_out, float &yaw_out);
-
-    float throttle_hover() const override;
-
-private:
-
-};
-#endif
 
 class ModeAltHold : public Mode {
 
@@ -606,45 +574,6 @@ private:
 
 };
 
-
-class ModeFlip : public Mode {
-
-public:
-    // inherit constructor
-    using Mode::Mode;
-
-    bool init(bool ignore_checks) override;
-    void run() override;
-
-    bool requires_GPS() const override { return false; }
-    bool has_manual_throttle() const override { return false; }
-    bool allows_arming(bool from_gcs) const override { return false; };
-    bool is_autopilot() const override { return false; }
-
-protected:
-
-    const char *name() const override { return "FLIP"; }
-    const char *name4() const override { return "FLIP"; }
-
-private:
-
-    // Flip
-    Vector3f orig_attitude;         // original vehicle attitude before flip
-
-    enum class FlipState : uint8_t {
-        Start,
-        Roll,
-        Pitch_A,
-        Pitch_B,
-        Recover,
-        Abandon
-    };
-    FlipState _state;               // current state of flip
-    Mode::Number   orig_control_mode;   // flight mode when flip was initated
-    uint32_t  start_time_ms;          // time since flip began
-    int8_t    roll_dir;            // roll direction (-1 = roll left, 1 = roll right)
-    int8_t    pitch_dir;           // pitch direction (-1 = pitch forward, 1 = pitch back)
-};
 
 
 #if !HAL_MINIMIZE_FEATURES && OPTFLOW == ENABLED
@@ -1091,33 +1020,6 @@ private:
 };
 
 
-class ModeSport : public Mode {
-
-public:
-    // inherit constructor
-    using Mode::Mode;
-
-    bool init(bool ignore_checks) override;
-    void run() override;
-
-    bool requires_GPS() const override { return false; }
-    bool has_manual_throttle() const override { return false; }
-    bool allows_arming(bool from_gcs) const override { return true; };
-    bool is_autopilot() const override { return false; }
-    bool has_user_takeoff(bool must_navigate) const override {
-        return !must_navigate;
-    }
-
-protected:
-
-    const char *name() const override { return "SPORT"; }
-    const char *name4() const override { return "SPRT"; }
-
-private:
-
-};
-
-
 class ModeStabilize : public Mode {
 
 public:
@@ -1204,55 +1106,6 @@ private:
         SYSTEMID_STATE_STOPPED,
         SYSTEMID_STATE_TESTING
     } systemid_state;
-};
-
-class ModeThrow : public Mode {
-
-public:
-    // inherit constructor
-    using Mode::Mode;
-
-    bool init(bool ignore_checks) override;
-    void run() override;
-
-    bool requires_GPS() const override { return true; }
-    bool has_manual_throttle() const override { return false; }
-    bool allows_arming(bool from_gcs) const override { return true; };
-    bool is_autopilot() const override { return false; }
-
-    // Throw types
-    enum ThrowModeType {
-        ThrowType_Upward = 0,
-        ThrowType_Drop = 1
-    };
-
-protected:
-
-    const char *name() const override { return "THROW"; }
-    const char *name4() const override { return "THRW"; }
-
-private:
-
-    bool throw_detected();
-    bool throw_position_good();
-    bool throw_height_good();
-    bool throw_attitude_good();
-
-    // Throw stages
-    enum ThrowModeStage {
-        Throw_Disarmed,
-        Throw_Detecting,
-        Throw_Uprighting,
-        Throw_HgtStabilise,
-        Throw_PosHold
-    };
-
-    ThrowModeStage stage = Throw_Disarmed;
-    ThrowModeStage prev_stage = Throw_Disarmed;
-    uint32_t last_log_ms;
-    bool nextmode_attempted;
-    uint32_t free_fall_start_ms;    // system time free fall was detected
-    float free_fall_start_velz;     // vertical velocity when free fall was detected
 };
 
 // modes below rely on Guided mode so must be declared at the end (instead of in alphabetical order)

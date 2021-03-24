@@ -414,55 +414,6 @@ const AP_Param::Info Copter::var_info[] = {
     // @User: Advanced
     GSCALAR(rc_speed, "RC_SPEED",              RC_FAST_SPEED),
 
-    // @Param: ACRO_RP_P
-    // @DisplayName: Acro Roll and Pitch P gain
-    // @Description: Converts pilot roll and pitch into a desired rate of rotation in ACRO and SPORT mode.  Higher values mean faster rate of rotation.
-    // @Range: 1 10
-    // @User: Standard
-    GSCALAR(acro_rp_p,                 "ACRO_RP_P",           ACRO_RP_P),
-
-    // @Param: ACRO_YAW_P
-    // @DisplayName: Acro Yaw P gain
-    // @Description: Converts pilot yaw input into a desired rate of rotation.  Higher values mean faster rate of rotation.
-    // @Range: 1 10
-    // @User: Standard
-    GSCALAR(acro_yaw_p,                 "ACRO_YAW_P",           ACRO_YAW_P),
-
-#if MODE_ACRO_ENABLED == ENABLED || MODE_SPORT_ENABLED == ENABLED
-    // @Param: ACRO_BAL_ROLL
-    // @DisplayName: Acro Balance Roll
-    // @Description: rate at which roll angle returns to level in acro and sport mode.  A higher value causes the vehicle to return to level faster. For helicopter sets the decay rate of the virtual flybar in the roll axis. A higher value causes faster decay of desired to actual attitude.
-    // @Range: 0 3
-    // @Increment: 0.1
-    // @User: Advanced
-    GSCALAR(acro_balance_roll,      "ACRO_BAL_ROLL",    ACRO_BALANCE_ROLL),
-
-    // @Param: ACRO_BAL_PITCH
-    // @DisplayName: Acro Balance Pitch
-    // @Description: rate at which pitch angle returns to level in acro and sport mode.  A higher value causes the vehicle to return to level faster. For helicopter sets the decay rate of the virtual flybar in the pitch axis. A higher value causes faster decay of desired to actual attitude.
-    // @Range: 0 3
-    // @Increment: 0.1
-    // @User: Advanced
-    GSCALAR(acro_balance_pitch,     "ACRO_BAL_PITCH",   ACRO_BALANCE_PITCH),
-#endif
-
-#if MODE_ACRO_ENABLED == ENABLED
-    // @Param: ACRO_TRAINER
-    // @DisplayName: Acro Trainer
-    // @Description: Type of trainer used in acro mode
-    // @Values: 0:Disabled,1:Leveling,2:Leveling and Limited
-    // @User: Advanced
-    GSCALAR(acro_trainer,   "ACRO_TRAINER",     ACRO_TRAINER_LIMITED),
-
-    // @Param: ACRO_RP_EXPO
-    // @DisplayName: Acro Roll/Pitch Expo
-    // @Description: Acro roll/pitch Expo to allow faster rotation when stick at edges
-    // @Values: 0:Disabled,0.1:Very Low,0.2:Low,0.3:Medium,0.4:High,0.5:Very High
-    // @Range: -0.5 1.0
-    // @User: Advanced
-    GSCALAR(acro_rp_expo,  "ACRO_RP_EXPO",    ACRO_RP_EXPO_DEFAULT),
-#endif
-
     // variables not in the g class which contain EEPROM saved variables
 
 #if CAMERA == ENABLED
@@ -671,15 +622,6 @@ const AP_Param::Info Copter::var_info[] = {
     // @Path: ../libraries/AP_Notify/AP_Notify.cpp
     GOBJECT(notify, "NTF_",  AP_Notify),
 
-#if MODE_THROW_ENABLED == ENABLED
-    // @Param: THROW_MOT_START
-    // @DisplayName: Start motors before throwing is detected
-    // @Description: Used by THROW mode. Controls whether motors will run at the speed set by THR_MIN or will be stopped when armed and waiting for the throw.
-    // @Values: 0:Stopped,1:Running
-    // @User: Standard
-    GSCALAR(throw_motor_start, "THROW_MOT_START", 0),
-#endif
-
 #if AP_TERRAIN_AVAILABLE && AC_TERRAIN
     // @Param: TERRAIN_FOLLOW
     // @DisplayName: Terrain Following use control
@@ -720,22 +662,6 @@ const AP_Param::GroupInfo ParametersG2::var_info[] = {
     AP_SUBGROUPINFO(button, "BTN_", 2, ParametersG2, AP_Button),
 #endif
 
-#if MODE_THROW_ENABLED == ENABLED
-    // @Param: THROW_NEXTMODE
-    // @DisplayName: Throw mode's follow up mode
-    // @Description: Vehicle will switch to this mode after the throw is successfully completed.  Default is to stay in throw mode (18)
-    // @Values: 3:Auto,4:Guided,5:LOITER,6:RTL,9:Land,17:Brake,18:Throw
-    // @User: Standard
-    AP_GROUPINFO("THROW_NEXTMODE", 3, ParametersG2, throw_nextmode, 18),
-
-    // @Param: THROW_TYPE
-    // @DisplayName: Type of Type
-    // @Description: Used by THROW mode. Specifies whether Copter is thrown upward or dropped.
-    // @Values: 0:Upward Throw,1:Drop
-    // @User: Standard
-    AP_GROUPINFO("THROW_TYPE", 4, ParametersG2, throw_type, ModeThrow::ThrowType_Upward),
-#endif
-
     // @Param: GND_EFFECT_COMP
     // @DisplayName: Ground Effect Compensation Enable/Disable
     // @Description: Ground Effect Compensation Enable/Disable
@@ -768,24 +694,7 @@ const AP_Param::GroupInfo ParametersG2::var_info[] = {
     AP_SUBGROUPINFO(proximity, "PRX", 8, ParametersG2, AP_Proximity),
 #endif
 
-    // @Param: ACRO_Y_EXPO
-    // @DisplayName: Acro Yaw Expo
-    // @Description: Acro yaw expo to allow faster rotation when stick at edges
-    // @Values: 0:Disabled,0.1:Very Low,0.2:Low,0.3:Medium,0.4:High,0.5:Very High
-    // @Range: -0.5 1.0
-    // @User: Advanced
-    AP_GROUPINFO("ACRO_Y_EXPO", 9, ParametersG2, acro_y_expo, ACRO_Y_EXPO_DEFAULT),
-
-#if MODE_ACRO_ENABLED == ENABLED
-    // @Param: ACRO_THR_MID
-    // @DisplayName: Acro Thr Mid
-    // @Description: Acro Throttle Mid
-    // @Range: 0 1
-    // @User: Advanced
-    AP_GROUPINFO("ACRO_THR_MID", 10, ParametersG2, acro_thr_mid, ACRO_THR_MID_DEFAULT),
-#endif
-
-    // @Param: SYSID_ENFORCE
+   // @Param: SYSID_ENFORCE
     // @DisplayName: GCS sysid enforcement
     // @Description: This controls whether packets from other than the expected GCS system ID will be accepted
     // @Values: 0:NotEnforced,1:Enforced
@@ -829,12 +738,6 @@ const AP_Param::GroupInfo ParametersG2::var_info[] = {
     // @Group: TCAL
     // @Path: ../libraries/AP_TempCalibration/AP_TempCalibration.cpp
     AP_SUBGROUPINFO(temp_calibration, "TCAL", 19, ParametersG2, AP_TempCalibration),
-
-#if TOY_MODE_ENABLED == ENABLED
-    // @Group: TMODE
-    // @Path: toy_mode.cpp
-    AP_SUBGROUPINFO(toy_mode, "TMODE", 20, ParametersG2, ToyMode),
-#endif
 
 #if MODE_SMARTRTL_ENABLED == ENABLED
     // @Group: SRTL_

@@ -10,7 +10,6 @@
 #include <AP_Logger/AP_Logger_SITL.h>
 
 #include <SITL/SIM_Multicopter.h>
-#include <SITL/SIM_Helicopter.h>
 #include <SITL/SIM_SingleCopter.h>
 #include <SITL/SIM_Plane.h>
 #include <SITL/SIM_QuadPlane.h>
@@ -116,9 +115,6 @@ static const struct {
     { "dodeca-hexa",        MultiCopter::create },
     { "tri",                MultiCopter::create },
     { "y6",                 MultiCopter::create },
-    { "heli",               Helicopter::create },
-    { "heli-dual",          Helicopter::create },
-    { "heli-compound",      Helicopter::create },
     { "singlecopter",       SingleCopter::create },
     { "coaxcopter",         SingleCopter::create },
     { "rover",              SimRover::create },

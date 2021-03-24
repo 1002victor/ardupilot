@@ -120,7 +120,6 @@
   <param name="LOITER_LAT_P" value="1.0" />
   <param name="AHRS_RP_P" value="0.1" />
   <param name="FENCE_ACTION" value="1.0" />
-  <param name="TOY_RATE" value="1.0" />
   <param name="RATE_RLL_D" value="0.006" />
   <param name="RC5_MIN" value="1151.0" />
   <param name="RC5_TRIM" value="1676.0" />

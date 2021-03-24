@@ -33,12 +33,6 @@ Mode *Copter::mode_from_mode_num(const Mode::Number mode)
     Mode *ret = nullptr;
 
     switch (mode) {
-#if MODE_ACRO_ENABLED == ENABLED
-        case Mode::Number::ACRO:
-            ret = &mode_acro;
-            break;
-#endif
-
         case Mode::Number::STABILIZE:
             ret = &mode_stabilize;
             break;
@@ -87,18 +81,6 @@ Mode *Copter::mode_from_mode_num(const Mode::Number mode)
             break;
 #endif
 
-#if MODE_SPORT_ENABLED == ENABLED
-        case Mode::Number::SPORT:
-            ret = &mode_sport;
-            break;
-#endif
-
-#if MODE_FLIP_ENABLED == ENABLED
-        case Mode::Number::FLIP:
-            ret = &mode_flip;
-            break;
-#endif
-
 #if AUTOTUNE_ENABLED == ENABLED
         case Mode::Number::AUTOTUNE:
             ret = &mode_autotune;
@@ -114,12 +96,6 @@ Mode *Copter::mode_from_mode_num(const Mode::Number mode)
 #if MODE_BRAKE_ENABLED == ENABLED
         case Mode::Number::BRAKE:
             ret = &mode_brake;
-            break;
-#endif
-
-#if MODE_THROW_ENABLED == ENABLED
-        case Mode::Number::THROW:
-            ret = &mode_throw;
             break;
 #endif
 
@@ -182,7 +158,7 @@ Mode *Copter::mode_from_mode_num(const Mode::Number mode)
 // set_mode - change flight mode and perform any necessary initialisation
 // optional force parameter used to force the flight mode change (used only first time mode is set)
 // returns true if mode was successfully set
-// ACRO, STABILIZE, ALTHOLD, LAND, DRIFT and SPORT can always be set successfully but the return state of other flight modes should be checked and the caller should deal with failures appropriately
+// STABILIZE, ALTHOLD, LAND, DRIFT and SPORT can always be set successfully but the return state of other flight modes should be checked and the caller should deal with failures appropriately
 bool Copter::set_mode(Mode::Number mode, ModeReason reason)
 {
 

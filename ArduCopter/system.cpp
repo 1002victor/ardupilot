@@ -418,7 +418,7 @@ void Copter::update_auto_armed()
         // if motors are armed and throttle is above zero auto_armed should be true
         // if motors are armed and we are in throw mode, then auto_armed should be true
         } else if (motors->armed() && !ap.using_interlock) {
-            if(!ap.throttle_zero || control_mode == Mode::Number::THROW) {
+            if(!ap.throttle_zero) {
                 set_auto_armed(true);
             }
         }
@@ -615,9 +615,4 @@ void Copter::allocate_motors(void)
     
     // upgrade parameters. This must be done after allocating the objects
     convert_pid_parameters();
-}
-
-bool Copter::is_tradheli() const
-{
-    return false;
 }

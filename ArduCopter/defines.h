@@ -45,7 +45,6 @@ enum tuning_func {
     TUNING_ALTITUDE_HOLD_KP =           14, // altitude hold controller's P term (alt error to desired rate)
     TUNING_RATE_ROLL_PITCH_KD =         21, // body frame roll/pitch rate controller's D term
     TUNING_VEL_XY_KP =                  22, // loiter rate controller's P term (speed error to tilt angle)
-    TUNING_ACRO_RP_KP =                 25, // acro controller's P term.  converts pilot input to a desired roll, pitch or yaw rate
     TUNING_YAW_RATE_KD =                26, // body frame yaw rate controller's D term
     TUNING_VEL_XY_KI =                  28, // loiter rate controller's I term (speed error to tilt angle)
     TUNING_AHRS_YAW_KP =                30, // ahrs's compass effect on yaw angle (0 = very low, 1 = very high)
@@ -55,7 +54,6 @@ enum tuning_func {
     TUNING_ACCEL_Z_KD =                 36, // accel based throttle controller's D term
     TUNING_DECLINATION =                38, // compass declination in radians
     TUNING_CIRCLE_RATE =                39, // circle turn rate in degrees (hard coded to about 45 degrees in either direction)
-    TUNING_ACRO_YAW_KP =                40, // acro controller's P term.  converts pilot input to a desired roll, pitch or yaw rate
     TUNING_RANGEFINDER_GAIN =           41, // rangefinder gain
     TUNING_EKF_VERTICAL_POS =           42, // EKF's baro vs accel (higher rely on accels more, baro impact is reduced).  Range should be 0.2 ~ 4.0?  2.0 is default
     TUNING_EKF_HORIZONTAL_POS =         43, // EKF's gps vs accel (higher rely on accels more, gps impact is reduced).  Range should be 1.0 ~ 3.0?  1.5 is default
@@ -75,11 +73,6 @@ enum tuning_func {
     TUNING_WINCH =                      57, // winch control (not actually a value to be tuned)
     TUNING_SYSTEM_ID_MAGNITUDE =        58  // magnitude of the system ID signal
 };
-
-// Acro Trainer types
-#define ACRO_TRAINER_DISABLED   0
-#define ACRO_TRAINER_LEVELING   1
-#define ACRO_TRAINER_LIMITED    2
 
 // Yaw behaviours during missions - possible values for WP_YAW_BEHAVIOR parameter
 #define WP_YAW_BEHAVIOR_NONE                          0   // auto pilot will never control yaw during missions or rtl (except for DO_CONDITIONAL_YAW command received)

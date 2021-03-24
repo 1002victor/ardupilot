@@ -66,7 +66,6 @@ void RC_Channel_Copter::init_aux_function(const aux_func_t ch_option, const aux_
     case AUX_FUNC::SIMPLE_MODE:
     case AUX_FUNC::RANGEFINDER:
     case AUX_FUNC::SUPERSIMPLE_MODE:
-    case AUX_FUNC::ACRO_TRAINER:
     case AUX_FUNC::PARACHUTE_ENABLE:
     case AUX_FUNC::PARACHUTE_3POS:      // we trust the vehicle will be disarmed so even if switch is in release position the chute will not release
     case AUX_FUNC::RETRACT_MOUNT:
@@ -82,7 +81,7 @@ void RC_Channel_Copter::init_aux_function(const aux_func_t ch_option, const aux_
         do_aux_function(ch_option, ch_flag);
         break;
     // the following functions do not need to be initialised:
-    case AUX_FUNC::FLIP:
+
     case AUX_FUNC::RTL:
     case AUX_FUNC::SAVE_TRIM:
     case AUX_FUNC::SAVE_WP:
@@ -91,7 +90,7 @@ void RC_Channel_Copter::init_aux_function(const aux_func_t ch_option, const aux_
     case AUX_FUNC::AUTOTUNE:
     case AUX_FUNC::LAND:
     case AUX_FUNC::BRAKE:
-    case AUX_FUNC::THROW:
+ 
     case AUX_FUNC::SMART_RTL:
     case AUX_FUNC::GUIDED:
     case AUX_FUNC::LOITER:
@@ -148,12 +147,6 @@ void RC_Channel_Copter::do_aux_function_change_mode(const Mode::Number mode,
 void RC_Channel_Copter::do_aux_function(const aux_func_t ch_option, const aux_switch_pos_t ch_flag)
 {
     switch(ch_option) {
-        case AUX_FUNC::FLIP:
-            // flip if switch is on, positive throttle and we're actually flying
-            if (ch_flag == aux_switch_pos_t::HIGH) {
-                copter.set_mode(Mode::Number::FLIP, ModeReason::RC_COMMAND);
-            }
-            break;
 
         case AUX_FUNC::SIMPLE_MODE:
             // low = simple mode off, middle or high position turns simple mode on
@@ -172,7 +165,8 @@ void RC_Channel_Copter::do_aux_function(const aux_func_t ch_option, const aux_sw
             break;
 
         case AUX_FUNC::SAVE_TRIM:
-            if ((ch_flag == HIGH) && (copter.control_mode <= Mode::Number::ACRO) && (copter.channel_throttle->get_control_in() == 0)) {
+        //wenxiaojing  if ((ch_flag == HIGH) && (copter.control_mode <= Mode::Number::ACRO) && (copter.channel_throttle->get_control_in() == 0)) {
+            if ((ch_flag == HIGH) && (copter.control_mode < Mode::Number::ALT_HOLD) && (copter.channel_throttle->get_control_in() == 0)) {
                 copter.save_trim();
             }
             break;
@@ -246,24 +240,6 @@ void RC_Channel_Copter::do_aux_function(const aux_func_t ch_option, const aux_sw
 #endif
             break;
 
-        case AUX_FUNC::ACRO_TRAINER:
-#if MODE_ACRO_ENABLED == ENABLED
-            switch(ch_flag) {
-                case LOW:
-                    copter.g.acro_trainer = ACRO_TRAINER_DISABLED;
-                    copter.Log_Write_Event(DATA_ACRO_TRAINER_DISABLED);
-                    break;
-                case MIDDLE:
-                    copter.g.acro_trainer = ACRO_TRAINER_LEVELING;
-                    copter.Log_Write_Event(DATA_ACRO_TRAINER_LEVELING);
-                    break;
-                case HIGH:
-                    copter.g.acro_trainer = ACRO_TRAINER_LIMITED;
-                    copter.Log_Write_Event(DATA_ACRO_TRAINER_LIMITED);
-                    break;
-            }
-#endif
-            break;
 
         case AUX_FUNC::AUTOTUNE:
 #if AUTOTUNE_ENABLED == ENABLED
@@ -357,12 +333,6 @@ void RC_Channel_Copter::do_aux_function(const aux_func_t ch_option, const aux_sw
         case AUX_FUNC::BRAKE:
 #if MODE_BRAKE_ENABLED == ENABLED
             do_aux_function_change_mode(Mode::Number::BRAKE, ch_flag);
-#endif
-            break;
-
-        case AUX_FUNC::THROW:
-#if MODE_THROW_ENABLED == ENABLED
-            do_aux_function_change_mode(Mode::Number::THROW, ch_flag);
 #endif
             break;
 

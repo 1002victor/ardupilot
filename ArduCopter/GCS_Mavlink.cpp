@@ -1242,14 +1242,7 @@ void GCS_MAVLINK_Copter::handleMessage(const mavlink_message_t &msg)
 #if ADSB_ENABLED == ENABLED
         copter.adsb.handle_message(chan, msg);
 #endif
-        break;
-
-#if TOY_MODE_ENABLED == ENABLED
-    case MAVLINK_MSG_ID_NAMED_VALUE_INT:
-        copter.g2.toy_mode.handle_message(msg);
-        break;
-#endif
-        
+        break;       
     default:
         handle_common_message(msg);
         break;

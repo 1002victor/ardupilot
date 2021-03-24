@@ -66,9 +66,6 @@ private:
     } report;
     float last_flap;
 
-    // are we controlling a heli?
-    bool heli_frame;
-
     uint64_t unselected_mask;
     
     // throttle joystick input is very weird. See comments in the main code

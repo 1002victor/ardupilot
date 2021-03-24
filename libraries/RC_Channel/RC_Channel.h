@@ -102,7 +102,6 @@ public:
     // Aux Switch enumeration
     enum class AUX_FUNC {
         DO_NOTHING =           0, // aux switch disabled
-        FLIP =                 2, // flip
         SIMPLE_MODE =          3, // change to simple mode
         RTL =                  4, // change to RTL flight mode
         SAVE_TRIM =            5, // save current position as level
@@ -112,7 +111,7 @@ public:
         FENCE =               11, // allow enabling or disabling fence in flight
         RESETTOARMEDYAW =     12, // UNUSED
         SUPERSIMPLE_MODE =    13, // change to simple mode in middle, super simple at top
-        ACRO_TRAINER =        14, // low = disabled, middle = leveled, high = leveled and limited
+
         SPRAYER =             15, // enable/disable the crop sprayer
         AUTO =                16, // change to auto flight mode
         AUTOTUNE =            17, // auto tune
@@ -134,7 +133,7 @@ public:
         RELAY2 =              34, // Relay2 pin on/off
         RELAY3 =              35, // Relay3 pin on/off
         RELAY4 =              36, // Relay4 pin on/off
-        THROW =               37, // change to THROW flight mode
+
         AVOID_ADSB =          38, // enable AP_Avoidance library
         PRECISION_LOITER =    39, // enable precision loiter
         AVOID_PROXIMITY =     40, // enable object avoidance using proximity sensors (ie. horizontal lidar)
@@ -149,7 +148,7 @@ public:
         USER_FUNC3 =          49, // user function #3
         LEARN_CRUISE =        50, // learn cruise throttle (Rover)
         MANUAL       =        51, // manual mode
-        ACRO         =        52, // acro mode
+
         STEERING     =        53, // steering mode
         HOLD         =        54, // hold mode
         GUIDED       =        55, // guided mode

@@ -29,12 +29,10 @@
 //#define RPM_ENABLED           DISABLED            // disable rotations per minute sensor support
 //#define MAGNETOMETER          DISABLED            // disable magnetometer support
 //#define STATS_ENABLED         DISABLED            // disable statistics support
-//#define MODE_ACRO_ENABLED     DISABLED            // disable acrobatic mode support
 //#define MODE_AUTO_ENABLED     DISABLED            // disable auto mode support
 //#define MODE_BRAKE_ENABLED    DISABLED            // disable brake mode support
 //#define MODE_CIRCLE_ENABLED   DISABLED            // disable circle mode support
 //#define MODE_DRIFT_ENABLED    DISABLED            // disable drift mode support
-//#define MODE_FLIP_ENABLED     DISABLED            // disable flip mode support
 //#define MODE_FOLLOW_ENABLED   DISABLED            // disable follow mode support
 //#define MODE_GUIDED_ENABLED   DISABLED            // disable guided mode support
 //#define MODE_GUIDED_NOGPS_ENABLED   DISABLED      // disable guided/nogps mode support
@@ -42,9 +40,7 @@
 //#define MODE_POSHOLD_ENABLED  DISABLED            // disable poshold mode support
 //#define MODE_RTL_ENABLED      DISABLED            // disable rtl mode support
 //#define MODE_SMARTRTL_ENABLED DISABLED            // disable smartrtl mode support
-//#define MODE_SPORT_ENABLED    DISABLED            // disable sport mode support
 //#define MODE_SYSTEMID_ENABLED DISABLED            // disable system ID mode support
-//#define MODE_THROW_ENABLED    DISABLED            // disable throw mode support
 //#define MODE_ZIGZAG_ENABLED   DISABLED            // disable zigzag mode support
 //#define OSD_ENABLED           DISABLED            // disable on-screen-display support
 //#define BUTTON_ENABLED        DISABLED            // disable button support

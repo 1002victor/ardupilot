@@ -96,22 +96,8 @@ class VehicleInfo(object):
                 "waf_target": "bin/arducopter",
                 "default_params_filename": "default_params/copter.parm",
             },
-            # HELICOPTER
-            "heli": {
-                "make_target": "sitl-heli",
-                "waf_target": "bin/arducopter-heli",
-                "default_params_filename": "default_params/copter-heli.parm",
-            },
-            "heli-dual": {
-                "make_target": "sitl-heli-dual",
-                "waf_target": "bin/arducopter-heli",
-                "default_params_filename": ["default_params/copter-heli.parm",
-                                            "default_params/copter-heli-dual.parm"],
-            },
-            "heli-compound": {
-                "make_target": "sitl-heli-compound",
-                "waf_target": "bin/arducopter-heli",
-            },
+            
+                   
             "singlecopter": {
                 "make_target": "sitl",
                 "waf_target": "bin/arducopter",
@@ -218,66 +204,6 @@ class VehicleInfo(object):
             },
         },
     },
-    "APMrover2": {
-        "default_frame": "rover",
-        "frames": {
-            # ROVER
-            "rover": {
-                "waf_target": "bin/ardurover",
-                "default_params_filename": "default_params/rover.parm",
-            },
-            "rover-skid": {
-                "waf_target": "bin/ardurover",
-                "default_params_filename": ["default_params/rover.parm",
-                                            "default_params/rover-skid.parm"],
-            },
-            "balancebot": {
-                "waf_target": "bin/ardurover",
-                "default_params_filename": ["default_params/rover.parm",
-                                            "default_params/rover-skid.parm",
-                                            "default_params/balancebot.parm"],
-            },
-            "sailboat": {
-                "waf_target": "bin/ardurover",
-                "default_params_filename": ["default_params/rover.parm",
-                                            "default_params/sailboat.parm"],
-            },
-            "sailboat-motor": {
-                "waf_target": "bin/ardurover",
-                "default_params_filename": ["default_params/rover.parm",
-                                            "default_params/sailboat-motor.parm"],
-            },
-            "gazebo-rover": {
-                "waf_target": "bin/ardurover",
-                "default_params_filename": ["default_params/rover.parm",
-                                            "default_params/rover-skid.parm"],
-            },
-            "calibration": {
-                "extra_mavlink_cmds": "module load sitl_calibration;",
-            },
-        },
-    },
-    "ArduSub": {
-        "default_frame": "vectored",
-        "frames": {
-            "vectored": {
-                "waf_target": "bin/ardusub",
-                "default_params_filename": "default_params/sub.parm",
-            },
-            "gazebo-bluerov2": {
-                "waf_target": "bin/ardusub",
-                "default_params_filename": "default_params/sub.parm",
-            },
-        },
-    },
-    "AntennaTracker": {
-        "default_frame": "tracker",
-        "frames": {
-            "tracker": {
-                "waf_target": "bin/antennatracker",
-            },
-        },
-    },
 }
 
 
@@ -296,13 +222,10 @@ class VehicleInfo(object):
         if frame in frames:
             ret = self.options[vehicle]["frames"][frame]
         else:
-            for p in ["octa", "tri", "y6", "firefly", "heli", "gazebo", "last_letter", "jsbsim", "quadplane", "plane-elevon", "plane-vtail", "plane", "airsim"]:
+            for p in ["octa", "tri", "y6", "firefly", "gazebo", "last_letter", "jsbsim", "quadplane", "plane-elevon", "plane-vtail", "plane", "airsim"]:
                 if frame.startswith(p):
                     ret = self.options[vehicle]["frames"][p]
                     break
-        if ret is None:
-            if frame.endswith("-heli"):
-                ret = self.options[vehicle]["frames"]["heli"]
         if ret is None:
             print("WARNING: no config for frame (%s)" % frame)
             ret = {}

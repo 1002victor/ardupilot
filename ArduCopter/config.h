@@ -261,12 +261,6 @@
 #endif
 
 //////////////////////////////////////////////////////////////////////////////
-// Acro - fly vehicle in acrobatic mode
-#ifndef MODE_ACRO_ENABLED
-# define MODE_ACRO_ENABLED ENABLED
-#endif
-
-//////////////////////////////////////////////////////////////////////////////
 // Auto mode - allows vehicle to trace waypoints and perform automated actions
 #ifndef MODE_AUTO_ENABLED
 # define MODE_AUTO_ENABLED ENABLED
@@ -288,12 +282,6 @@
 // Drift - fly vehicle in altitude-held, coordinated-turn mode
 #ifndef MODE_DRIFT_ENABLED
 # define MODE_DRIFT_ENABLED ENABLED
-#endif
-
-//////////////////////////////////////////////////////////////////////////////
-// flip - fly vehicle in flip in pitch and roll direction mode
-#ifndef MODE_FLIP_ENABLED
-# define MODE_FLIP_ENABLED ENABLED
 #endif
 
 //////////////////////////////////////////////////////////////////////////////
@@ -339,21 +327,9 @@
 #endif
 
 //////////////////////////////////////////////////////////////////////////////
-// Sport - fly vehicle in rate-controlled (earth-frame) mode
-#ifndef MODE_SPORT_ENABLED
-# define MODE_SPORT_ENABLED !HAL_MINIMIZE_FEATURES
-#endif
-
-//////////////////////////////////////////////////////////////////////////////
 // System ID - conduct system identification tests on vehicle
 #ifndef MODE_SYSTEMID_ENABLED
 # define MODE_SYSTEMID_ENABLED !HAL_MINIMIZE_FEATURES
-#endif
-
-//////////////////////////////////////////////////////////////////////////////
-// Throw - fly vehicle after throwing it in the air
-#ifndef MODE_THROW_ENABLED
-# define MODE_THROW_ENABLED ENABLED
 #endif
 
 //////////////////////////////////////////////////////////////////////////////
@@ -483,38 +459,6 @@
 // Flight mode definitions
 //
 
-// Acro Mode
-#ifndef ACRO_RP_P
- # define ACRO_RP_P                 4.5f
-#endif
-
-#ifndef ACRO_YAW_P
- # define ACRO_YAW_P                4.5f
-#endif
-
-#ifndef ACRO_LEVEL_MAX_ANGLE
- # define ACRO_LEVEL_MAX_ANGLE      3000
-#endif
-
-#ifndef ACRO_BALANCE_ROLL
- #define ACRO_BALANCE_ROLL          1.0f
-#endif
-
-#ifndef ACRO_BALANCE_PITCH
- #define ACRO_BALANCE_PITCH         1.0f
-#endif
-
-#ifndef ACRO_RP_EXPO_DEFAULT
- #define ACRO_RP_EXPO_DEFAULT       0.3f
-#endif
-
-#ifndef ACRO_Y_EXPO_DEFAULT
- #define ACRO_Y_EXPO_DEFAULT        0.0f
-#endif
-
-#ifndef ACRO_THR_MID_DEFAULT
- #define ACRO_THR_MID_DEFAULT       0.0f
-#endif
 
 // RTL Mode
 #ifndef RTL_ALT_FINAL
@@ -752,10 +696,6 @@
 
 #ifndef CH_MODE_DEFAULT
  # define CH_MODE_DEFAULT   5
-#endif
-
-#ifndef TOY_MODE_ENABLED
-#define TOY_MODE_ENABLED DISABLED
 #endif
 
 #ifndef STATS_ENABLED

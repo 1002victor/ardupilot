@@ -96,7 +96,6 @@ public:
         k_param_log_last_filenumber,            // *** Deprecated - remove
                                                 // with next eeprom number
                                                 // change
-        k_param_toy_yaw_rate,                   // deprecated - remove
         k_param_crosstrack_min_distance,	// deprecated - remove with next eeprom number change
         k_param_rssi_pin,                   // unused, replaced by rssi_ library parameters
         k_param_throttle_accel_enabled,     // deprecated - remove
@@ -434,10 +433,6 @@ public:
     AP_Float        fs_ekf_thresh;
     AP_Int16        gcs_pid_mask;
 
-#if MODE_THROW_ENABLED == ENABLED
-    AP_Int8         throw_motor_start;
-#endif
-
 #if AP_TERRAIN_AVAILABLE && AC_TERRAIN
     AP_Int8         terrain_follow;
 #endif
@@ -486,12 +481,6 @@ public:
     AP_Gripper gripper;
 #endif
 
-#if MODE_THROW_ENABLED == ENABLED
-    // Throw mode parameters
-    AP_Int8 throw_nextmode;
-    AP_Int8 throw_type;
-#endif
-
     // ground effect compensation enable/disable
     AP_Int8 gndeffect_comp_enabled;
 
@@ -526,9 +515,6 @@ public:
 
     // acro exponent parameters
     AP_Float acro_y_expo;
-#if MODE_ACRO_ENABLED == ENABLED
-    AP_Float acro_thr_mid;
-#endif
 
     // frame class
     AP_Int8 frame_class;
@@ -555,10 +541,6 @@ public:
 
     // Land alt final stage
     AP_Int16 land_alt_low;
-
-#if TOY_MODE_ENABLED == ENABLED
-    ToyMode toy_mode;
-#endif
 
 #if OPTFLOW == ENABLED
     // we need a pointer to the mode for the G2 table

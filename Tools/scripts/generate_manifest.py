@@ -95,11 +95,7 @@ class ManifestGenerator():
             "tri": "TRICOPTER",
             "octa": "OCTOROTOR",
             "octa-quad": "ARDUPILOT_OCTAQUAD",
-            "heli": "HELICOPTER",
             "Plane": "FIXED_WING",
-            "AntennaTracker": "ANTENNA_TRACKER",
-            "Rover": "GROUND_ROVER",
-            "Sub": "SUBMARINE",
             "AP_Periph": "CAN_PERIPHERAL",
         }
         if frame in frame_to_mavlink_dict:

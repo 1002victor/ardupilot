@@ -118,7 +118,7 @@ void ModeSystemId::run()
         motors->set_desired_spool_state(AP_Motors::DesiredSpoolState::SHUT_DOWN);
     // Tradheli doesn't set spool state to ground idle when throttle stick is zero.  Ground idle only set when
     // motor interlock is disabled.
-    } else if (copter.ap.throttle_zero && !copter.is_tradheli()) {
+    } else if (copter.ap.throttle_zero) {
         // Attempting to Land
         motors->set_desired_spool_state(AP_Motors::DesiredSpoolState::GROUND_IDLE);
     } else {
@@ -245,11 +245,8 @@ float pilot_throttle_scaled = get_pilot_desired_throttle();
     attitude_control->input_euler_angle_roll_pitch_euler_rate_yaw(target_roll, target_pitch, target_yaw_rate);
 
     // output pilot's throttle
-    if (copter.is_tradheli()) {
-        attitude_control->set_throttle_out(pilot_throttle_scaled, false, g.throttle_filt);
-    } else {
-        attitude_control->set_throttle_out(pilot_throttle_scaled, true, g.throttle_filt);
-    }
+    attitude_control->set_throttle_out(pilot_throttle_scaled, true, g.throttle_filt);
+    
 
     if (log_subsample <= 0) {
         log_data();

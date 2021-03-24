@@ -154,9 +154,6 @@
 #if ADVANCED_FAILSAFE == ENABLED
  # include "afs_copter.h"
 #endif
-#if TOY_MODE_ENABLED == ENABLED
- # include "toy_mode.h"
-#endif
 #if WINCH_ENABLED == ENABLED
  # include <AP_WheelEncoder/AP_WheelEncoder.h>
  # include <AP_Winch/AP_Winch.h>
@@ -197,14 +194,10 @@ public:
     friend class AP_AdvancedFailsafe_Copter;
 #endif
     friend class AP_Arming_Copter;
-    friend class ToyMode;
     friend class RC_Channel_Copter;
     friend class RC_Channels_Copter;
-
     friend class AutoTune;
-
     friend class Mode;
-    friend class ModeAcro;
     friend class ModeAltHold;
     friend class ModeAuto;
     friend class ModeAutoTune;
@@ -212,7 +205,6 @@ public:
     friend class ModeBrake;
     friend class ModeCircle;
     friend class ModeDrift;
-    friend class ModeFlip;
     friend class ModeFlowHold;
     friend class ModeFollow;
     friend class ModeGuided;
@@ -221,10 +213,8 @@ public:
     friend class ModePosHold;
     friend class ModeRTL;
     friend class ModeSmartRTL;
-    friend class ModeSport;
     friend class ModeStabilize;
     friend class ModeSystemId;
-    friend class ModeThrow;
     friend class ModeZigZag;
     friend class ModeAutorotate;
 
@@ -384,7 +374,7 @@ private:
     static_assert(sizeof(uint32_t) == sizeof(ap), "ap_t must be uint32_t");
 
     // This is the state of the flight control system
-    // There are multiple states defined such as STABILIZE, ACRO,
+    // There are multiple states defined such as STABILIZE,
     Mode::Number control_mode;
     ModeReason control_mode_reason = ModeReason::UNKNOWN;
 
@@ -719,14 +709,6 @@ private:
     // fence.cpp
     void fence_check();
 
-    // heli.cpp
-    void heli_init();
-    void check_dynamic_flight(void);
-    void update_heli_control_dynamics(void);
-    void heli_update_landing_swash();
-    float get_pilot_desired_rotor_speed() const;
-    void heli_update_rotor_speed_targets();
-    void heli_update_autorotation();
 #if MODE_AUTOROTATE_ENABLED == ENABLED
     void heli_set_autorotation(bool autotrotation);
 #endif
@@ -857,7 +839,6 @@ private:
     MAV_TYPE get_frame_mav_type();
     const char* get_frame_string();
     void allocate_motors(void);
-    bool is_tradheli() const;
 
     // terrain.cpp
     void terrain_update();
@@ -883,9 +864,7 @@ private:
 #endif
 
     Mode *flightmode;
-#if MODE_ACRO_ENABLED == ENABLED
-    ModeAcro mode_acro;
-#endif
+
     ModeAltHold mode_althold;
 #if MODE_AUTO_ENABLED == ENABLED
     ModeAuto mode_auto;
@@ -902,9 +881,6 @@ private:
 #endif
 #if MODE_DRIFT_ENABLED == ENABLED
     ModeDrift mode_drift;
-#endif
-#if MODE_FLIP_ENABLED == ENABLED
-    ModeFlip mode_flip;
 #endif
 #if MODE_FOLLOW_ENABLED == ENABLED
     ModeFollow mode_follow;
@@ -923,17 +899,11 @@ private:
     ModeRTL mode_rtl;
 #endif
     ModeStabilize mode_stabilize;
-#if MODE_SPORT_ENABLED == ENABLED
-    ModeSport mode_sport;
-#endif
 #if MODE_SYSTEMID_ENABLED == ENABLED
     ModeSystemId mode_systemid;
 #endif
 #if ADSB_ENABLED == ENABLED
     ModeAvoidADSB mode_avoid_adsb;
-#endif
-#if MODE_THROW_ENABLED == ENABLED
-    ModeThrow mode_throw;
 #endif
 #if MODE_GUIDED_NOGPS_ENABLED == ENABLED
     ModeGuidedNoGPS mode_guided_nogps;
