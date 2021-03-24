@@ -5,7 +5,6 @@
 
 #include <AP_HAL/AP_HAL.h>
 #include <AC_PID/AC_PID.h>
-#include <AC_PID/AC_HELI_PID.h>
 #include <RC_Channel/RC_Channel.h>
 
 // we need a boardconfig created so that the io processor is available
@@ -71,7 +70,6 @@ void loop()
 {
     // setup (unfortunately must be done here as we cannot create a global AC_PID object)
     AC_PID pid(TEST_P, TEST_I, TEST_D, 0.0f, TEST_IMAX * 100.0f, 0.0f, 0.0f, TEST_FILTER, TEST_DT);
-    AC_HELI_PID heli_pid(TEST_P, TEST_I, TEST_D, TEST_INITIAL_FF, TEST_IMAX * 100, 0.0f, 0.0f, TEST_FILTER, TEST_DT);
 
     // display PID gains
     hal.console->printf("P %f  I %f  D %f  imax %f\n", (double)pid.kP(), (double)pid.kI(), (double)pid.kD(), (double)pid.imax());
