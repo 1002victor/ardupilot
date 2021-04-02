@@ -1,21 +1,21 @@
 [submodule "modules/uavcan"]
 	path = modules/uavcan
-	url = git://github.com/ArduPilot/uavcan.git
+	url = http://192.168.1.103:3000/APM/uavcan.git
 [submodule "modules/waf"]
 	path = modules/waf
-	url = git://github.com/ArduPilot/waf.git
+	url = http://192.168.1.103:3000/APM/waf.git
 [submodule "modules/gbenchmark"]
 	path = modules/gbenchmark
-	url = git://github.com/google/benchmark.git
+	url = http://192.168.1.103:3000/APM/benchmark.git
 [submodule "modules/mavlink"]
 	path = modules/mavlink
-	url = git://github.com/ArduPilot/mavlink
+	url = http://192.168.1.103:3000/APM/mavlink.git
 [submodule "gtest"]
 	path = modules/gtest
-	url = git://github.com/ArduPilot/googletest
+	url = http://192.168.1.103:3000/APM/googletest.git
 [submodule "modules/ChibiOS"]
 	path = modules/ChibiOS
-	url = git://github.com/ArduPilot/ChibiOS.git
+	url = http://192.168.1.103:3000/APM/ChibiOS.git
 [submodule "modules/libcanard"]
 	path = modules/libcanard
-	url = git://github.com/ArduPilot/libcanard.git
+	url = http://192.168.1.103:3000/APM/libcanard.git
